@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "GitDocsify Extension",
   "version": "1.0.0",
-  "description": "A simple React app as a Chrome extension",
+  "description": "AI-powered GitHub README generator for seamless documentation creation.",
   "action": {
     "default_popup": "index.html"
   },

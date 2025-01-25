@@ -33,7 +33,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       if (user) {
         const userData: User = {
           id: user.id,
-          email: user.email,
+          email: user.email || "",
           avatar_url: user.user_metadata?.avatar_url || "",
           full_name: user.user_metadata?.full_name || "",
           user_name: user.user_metadata?.user_name || "",
@@ -47,7 +47,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, []);
 
   const signIn = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
         scopes: "repo read:user project",
