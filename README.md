@@ -112,6 +112,7 @@ cp .env.example .env
 ```bash
 VITE_SUPABASE_URL= your_supabase_url
 VITE_SUPABASE_KEY= your_supabase_key
+VITE_FRONTEND_URl= your_frontend_local_url or your_frontend_production_url
 ```
 
 5. Run Vite development server
@@ -152,6 +153,7 @@ cp .env.example .env
 ```bash
 SUPABASE_URL= your_supabase_url
 SUPABASE_KEY= your_supabase_key
+PYTHON_ENV= production or development
 ```
 
 6. Run the FastAPI app using Uvicorn
@@ -213,8 +215,12 @@ uvicorn main:app --reload
 │    │   ├── main.tsx              # Main entry file for React app
 │    │   ├── /pages                 # Page components (views)
 │    │   │   └── Login.tsx         # Login page component
+│    │   │   └── Dashboard.tsx         # User Dashboard page
+│    │   │   └── LoginScreen.tsx         # Loading component
 │    │   ├── /types                 # TypeScript types for the app
 │    │   │   └── user.ts           # User type definition
+│    │   ├── /utils                 # TypeScript types for the app
+│    │   │   └── ProtectedRoutes.tsx  # Protected Routes Wrapper
 │    └── vite.config.ts            # Vite configuration file for bundling
 ├── README.md                    # Project documentation (root level)
 └── .gitignore                   # Git ignore file
