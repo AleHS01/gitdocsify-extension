@@ -4,4 +4,6 @@ export type User = {
   avatar_url: string;
   full_name: string;
   user_name: string;
+  access_token: string;
+  refresh_token: string;
 };

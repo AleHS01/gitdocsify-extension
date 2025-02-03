@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "../lib/supabase";
 import { User } from "../types/user";
+import { useNavigate } from "react-router-dom";
 
 interface UserContextType {
   user: User | null;
@@ -18,18 +19,20 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       const {
-        data: { user },
+        data: { session },
         error,
-      } = await supabase.auth.getUser();
+      } = await supabase.auth.getSession();
 
       if (error) {
         console.error("Error fetching user:", error.message);
       }
-      console.log(user);
+      const user = session?.user;
+      console.log(session?.access_token);
       if (user) {
         const userData: User = {
           id: user.id,
@@ -37,6 +40,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           avatar_url: user.user_metadata?.avatar_url || "",
           full_name: user.user_metadata?.full_name || "",
           user_name: user.user_metadata?.user_name || "",
+          access_token: session?.provider_token || "",
+          refresh_token: session?.provider_refresh_token || "",
         };
         setUser(userData);
       }
@@ -44,6 +49,29 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     };
 
     fetchUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "SIGNED_IN" && session?.user) {
+          const userData: User = {
+            id: session.user.id,
+            email: session.user.email || "",
+            avatar_url: session.user.user_metadata?.avatar_url || "",
+            full_name: session.user.user_metadata?.full_name || "",
+            user_name: session.user.user_metadata?.user_name || "",
+            access_token: session?.provider_token || "",
+            refresh_token: session?.provider_refresh_token || "",
+          };
+          setUser(userData);
+        } else if (event === "SIGNED_OUT") {
+          setUser(null);
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async () => {
@@ -56,7 +84,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     if (error) {
       console.error("Error signing in:", error.message);
-      return;
     }
   };
 
@@ -64,10 +91,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      throw new Error(error.message);
+      console.error("Error signing out:", error.message);
+      return;
     }
 
     setUser(null);
+    navigate("/login", { replace: true });
+    window.location.reload();
   };
 
   return (

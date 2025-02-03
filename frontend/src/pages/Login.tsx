@@ -1,9 +1,15 @@
 import { Box, Button, Heading } from "@primer/react";
 import { MarkGithubIcon } from "@primer/octicons-react";
 import { useUser } from "../context/UserContext";
+import React from "react";
 
 function Login() {
-  const { signIn } = useUser();
+  const { signIn, loading } = useUser();
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    signIn();
+  };
+
   return (
     <Box
       sx={{
@@ -11,12 +17,12 @@ function Login() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
-        backgroundColor: "canvas.default",
-        padding: 3,
+        width: "100vw",
+        height: "100vh",
       }}
     >
       <MarkGithubIcon size={48} />
+
       <Heading as="h1" sx={{ fontSize: 4, fontWeight: "bold", mt: 3 }}>
         Sign in with GitHub
       </Heading>
@@ -33,7 +39,13 @@ function Login() {
           boxShadow: "shadow.medium",
         }}
       >
-        <Button type="submit" variant="primary" onClick={signIn} block>
+        <Button
+          type="submit"
+          variant="primary"
+          onClick={handleSignIn}
+          loading={loading}
+          block
+        >
           Sign in
         </Button>
       </Box>
