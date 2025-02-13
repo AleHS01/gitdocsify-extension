@@ -2,12 +2,23 @@ import { Box, Button, Heading } from "@primer/react";
 import { MarkGithubIcon } from "@primer/octicons-react";
 import { useUser } from "../context/UserContext";
 import React from "react";
+import axiosInstance from "../utils/axios";
 
 function Login() {
   const { signIn, loading } = useUser();
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     signIn();
+  };
+  const publicApi = async () => {
+    try {
+      const { data } = await axiosInstance.get(
+        "http://localhost:8000/api/public"
+      );
+      console.log("Public Data: ", data);
+    } catch (error) {
+      console.error("Error fetching public data:", error);
+    }
   };
 
   return (
@@ -48,6 +59,7 @@ function Login() {
         >
           Sign in
         </Button>
+        <Button onClick={publicApi}>Fetch Public Data</Button>
       </Box>
     </Box>
   );

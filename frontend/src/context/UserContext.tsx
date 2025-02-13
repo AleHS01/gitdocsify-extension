@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { supabase } from "../lib/supabase";
+import supabase from "../lib/supabase";
 import { User } from "../types/user";
 import { useNavigate } from "react-router-dom";
 
