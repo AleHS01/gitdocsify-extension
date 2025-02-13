@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from core.jwt import verify_jwt_token
+from src.app.core.jwt import verify_jwt_token
 
 load_dotenv()
 
