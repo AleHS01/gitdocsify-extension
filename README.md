@@ -14,9 +14,10 @@ AI-powered browser extension to elevate README files into professional-grade, us
 3. [Prerequisites ✅](#prerequisites)
    - [Installation Process 📦](#installation-process)
 4. [Setup ⚙️](#setup)
+   - [Docker Setup 🐳](#docker-setup)
    - [Frontend Setup & App Run 🚀](#frontend-setup--app-run)
    - [Backend Setup & Server Run 🌐](#backend-setup--server-run)
-5. [File Structure 🏗](#file-structure)
+6. [File Structure 🏗](#file-structure)
 
 <h2 id="tech-stack">Tech Stack 🛠️</h2>
 
@@ -42,10 +43,12 @@ AI-powered browser extension to elevate README files into professional-grade, us
 
 <h2 id="prerequisites">Prerequisites ✅</h2>
 
-### For this only install **brew**, Install anything below **brew**, through **brew**.
+Install **brew**. Install anything below **brew**, through **brew**.
+- [docker](https://www.docker.com/get-started/) (install docker desktop app for your OS)
 - [brew](https://brew.sh/)
 - [python](https://www.python.org)
 - [node.js](https://nodejs.org/en)
+
 
 <details>
   <summary><h3 id="installation-process">Installation Process 📦</h3></summary>
@@ -68,13 +71,16 @@ AI-powered browser extension to elevate README files into professional-grade, us
   ```bash
   brew install node
   ```
-  
+   #### Check docker Version
+  ```bash
+  docker --version
+  ```
   #### Check Python 3 and Pip Version
   ```bash
   python3 --version
   pip3 --version
   ```
-  #### Check Node.js
+  #### Check Node.js Version
   ```bash
   node --version
   ```
@@ -90,6 +96,39 @@ AI-powered browser extension to elevate README files into professional-grade, us
 git clone https://github.com/AleHS01/gitdocsify-extension.git
 cd gitdocsify-extension
 ```
+
+<details>
+  <summary><h3 id="docker-setup">Docker Setup 🐳</h3></summary>
+To run the entire project with Docker, follow these steps:
+   
+1. Make sure you have Docker installed:
+   - [Install Docker](https://www.docker.com/get-started/)
+   - Check Docker Version:
+     ```bash
+     docker --version
+     ``` 
+
+2.  Build the containers:
+```bash
+docker compose build
+```
+
+3. Start the containers:
+```bash
+docker compose up
+```
+- Both the frontend and backend services are going to be running:
+   - Frontend will be accessible at  `http://localhost:5173`
+   - Backend will be accessibl at `http://localhost:8000`
+4. Stop the containers:
+```bash
+docker compose down
+```
+</details>
+
+> [!IMPORTANT]
+> Docker automatically builds the containers and sets up the environment for both the frontend and backend, eliminating the need for manual setup.
+>> If you prefer to manually set up the frontend or backend, follow the steps below:
 
 <details>
   <summary><h3 id="frontend-setup--app-run">Frontend Setup & App Run 🚀</h3></summary>
@@ -176,6 +215,7 @@ uvicorn main:app --reload
 │   ├── poetry.lock               # Poetry lock file (dependency versions)
 │   ├── pyproject.toml            # Poetry project configuration
 │   ├── .env                      # Enviromental Variables
+│   ├── dockerfile                # Backend container image
 │   ├── /src                       # Source code for the backend
 │   │   └── /app                   # Main backend app directory
 │   │       ├── __init__.py       # Initializes the app module
@@ -197,6 +237,7 @@ uvicorn main:app --reload
 │    ├── eslint.config.js           # ESLint configuration file
 │    ├── index.html                # HTML entry file for the frontend
 │    ├── .env                      # Enviromental Variables
+│    ├── dockerfile                # Frontend container image
 │    ├── package-lock.json         # Lock file for npm dependencies
 │    ├── package.json              # Package configuration for the frontend
 │    ├── /public                    # Public directory (assets and metadata)
@@ -222,6 +263,8 @@ uvicorn main:app --reload
 │    │   ├── /utils                 # TypeScript types for the app
 │    │   │   └── ProtectedRoutes.tsx  # Protected Routes Wrapper
 │    └── vite.config.ts            # Vite configuration file for bundling
+├── docker-compose.yml             #Multi-container Docker setup
+├── .dockerignore                 # Excluded files from Docker
 ├── README.md                    # Project documentation (root level)
 └── .gitignore                   # Git ignore file
 ```
