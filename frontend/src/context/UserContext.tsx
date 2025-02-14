@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, ReactNode } from "react";
 import supabase from "../lib/supabase";
 import { User } from "../types/user";
 import { useNavigate } from "react-router-dom";
+import { createUserData } from "../utils/user";
 
 interface UserContextType {
   user: User | null;
@@ -19,6 +20,9 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [sessionExpirationTime, setSessionExpirationTime] = useState<
+    number | null
+  >(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,19 +35,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       if (error) {
         console.error("Error fetching user:", error.message);
       }
-      const user = session?.user;
-      console.log(session?.access_token);
-      if (user) {
-        const userData: User = {
-          id: user.id,
-          email: user.email || "",
-          avatar_url: user.user_metadata?.avatar_url || "",
-          full_name: user.user_metadata?.full_name || "",
-          user_name: user.user_metadata?.user_name || "",
-          access_token: session?.provider_token || "",
-          refresh_token: session?.provider_refresh_token || "",
-        };
+
+      if (session?.user) {
+        const userData: User = createUserData(session);
         setUser(userData);
+        if (session.expires_at) {
+          setSessionExpirationTime(session.expires_at * 1000);
+        }
       }
       setLoading(false);
     };
@@ -53,16 +51,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === "SIGNED_IN" && session?.user) {
-          const userData: User = {
-            id: session.user.id,
-            email: session.user.email || "",
-            avatar_url: session.user.user_metadata?.avatar_url || "",
-            full_name: session.user.user_metadata?.full_name || "",
-            user_name: session.user.user_metadata?.user_name || "",
-            access_token: session?.provider_token || "",
-            refresh_token: session?.provider_refresh_token || "",
-          };
+          const userData: User = createUserData(session);
           setUser(userData);
+          if (session.expires_at) {
+            setSessionExpirationTime(session.expires_at * 1000);
+          }
         } else if (event === "SIGNED_OUT") {
           setUser(null);
         }
@@ -73,6 +66,43 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       authListener.subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const checkSessionExpiry = () => {
+      if (sessionExpirationTime) {
+        const currentTime = Date.now();
+        const timeLeft = sessionExpirationTime - currentTime;
+
+        if (timeLeft < 5 * 60 * 1000) {
+          refreshSession();
+        }
+      }
+    };
+
+    const intervalId = setInterval(checkSessionExpiry, 60 * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [sessionExpirationTime]);
+
+  const refreshSession = async () => {
+    const { data, error } = await supabase.auth.refreshSession();
+
+    if (error) {
+      console.error("Error refreshing session:", error.message);
+      return;
+    }
+
+    if (data?.session) {
+      const userData = createUserData(data.session);
+      setUser(userData);
+
+      if (data.session.expires_at) {
+        setSessionExpirationTime(data.session.expires_at * 1000);
+      }
+    }
+  };
 
   const signIn = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
