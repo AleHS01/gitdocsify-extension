@@ -9,8 +9,8 @@ const LoadingScreen: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100%",
       }}
     >
       <Heading>Loading...</Heading>

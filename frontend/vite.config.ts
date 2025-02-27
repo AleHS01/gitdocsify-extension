@@ -19,6 +19,13 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: "./index.html",
+        background: "./src/background.js",
+        contentScript: "./src/contentScript.tsx",
+      },
+      output: {
+        entryFileNames: "[name].js",
+        format: "es",
+        inlineDynamicImports: false,
       },
     },
   },

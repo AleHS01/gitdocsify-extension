@@ -14,8 +14,8 @@ function App() {
   return (
     <Box
       sx={{
-        width: "100vw",
-        height: "100vh",
+        minWidth: "100vw",
+        minHeight: "100vh",
         backgroundColor: "canvas.default",
         position: "relative",
       }}
