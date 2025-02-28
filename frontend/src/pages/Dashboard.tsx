@@ -10,8 +10,9 @@ import {
   LockIcon,
 } from "@primer/octicons-react";
 import { languageColors } from "../utils/languageColors";
+import axiosInstance from "../utils/axios";
 
-const getLanguageColor = (language: string | null) => {
+const getLanguageColor = (language: string) => {
   if (!language) return "transparent";
 
   return languageColors[language] || "transparent";
@@ -23,17 +24,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchRepos = async () => {
-      if (!user || !user.user_name || !user.access_token) return;
-
       try {
-        const { data } = await axios.get(
-          `https://api.github.com/users/${user.user_name}/repos`,
-          {
-            headers: {
-              "X-GitHub-Api-Version": "2022-11-28",
-              Authorization: `Bearer ${user.access_token}`,
-            },
-          }
+        const { data } = await axiosInstance.get(
+          "http://localhost:8000/api/github/repo"
         );
 
         const filteredRepos = data.map((repo: any) => ({
@@ -54,13 +47,12 @@ const Dashboard = () => {
     };
 
     fetchRepos();
-  }, [user]);
+  }, []);
 
   return (
     <Box sx={{ p: 4 }}>
       <Text>{user?.user_name}</Text>
       <Button onClick={signOut}>Sign Out</Button>
-
       <Box
         sx={{
           mt: 4,

@@ -3,6 +3,7 @@ import supabase from "../lib/supabase";
 import { User } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import { createUserData } from "../utils/user";
+import axiosInstance from "../utils/axios";
 
 interface UserContextType {
   user: User | null;
@@ -24,6 +25,21 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     number | null
   >(null);
   const navigate = useNavigate();
+
+  const storeTokens = async (accessToken: string, refreshToken: string) => {
+    if (!accessToken && !refreshSession) {
+      return;
+    }
+
+    try {
+      await axiosInstance.post("http://localhost:8000/api/github/login", {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -53,6 +69,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         if (event === "SIGNED_IN" && session?.user) {
           const userData: User = createUserData(session);
           setUser(userData);
+          storeTokens(
+            session.provider_token || "",
+            session.provider_refresh_token || ""
+          );
           if (session.expires_at) {
             setSessionExpirationTime(session.expires_at * 1000);
           }
