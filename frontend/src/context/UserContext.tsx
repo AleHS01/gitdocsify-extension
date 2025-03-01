@@ -32,7 +32,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
 
     try {
-      await axiosInstance.post("http://localhost:8000/api/github/login", {
+      await axiosInstance.post("api/github/login", {
         access_token: accessToken,
         refresh_token: refreshToken,
       });

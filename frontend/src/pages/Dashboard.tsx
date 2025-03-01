@@ -26,9 +26,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        const { data } = await axiosInstance.get(
-          "http://localhost:8000/api/github/repo"
-        );
+        const { data } = await axiosInstance.get("api/github/repo");
 
         const filteredRepos = data.map((repo: any) => ({
           name: repo.name,
