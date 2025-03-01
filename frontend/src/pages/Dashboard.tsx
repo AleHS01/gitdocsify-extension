@@ -11,6 +11,7 @@ import {
 } from "@primer/octicons-react";
 import { languageColors } from "../utils/languageColors";
 import axiosInstance from "../utils/axios";
+import { Link } from "react-router-dom";
 
 const getLanguageColor = (language: string) => {
   if (!language) return "transparent";
@@ -63,77 +64,80 @@ const Dashboard = () => {
         }}
       >
         {repos.map((repo: Repository) => (
-          <Box
-            as="a"
+          <Link
             key={repo.name}
-            href={`/repo/${repo.name}`}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              border: "1px solid",
-              borderColor: "border.default",
-              borderRadius: "6px",
-              p: 3,
-              textDecoration: "none",
-              color: "inherit",
-              "&:hover": {
-                boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
-              },
-              height: "220px",
-            }}
+            to={`/repo/${repo.name}`}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 2,
+                flexDirection: "column",
+                border: "1px solid",
+                borderColor: "border.default",
+                borderRadius: "6px",
+                p: 3,
+                textDecoration: "none",
+                color: "inherit",
+                "&:hover": {
+                  boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
+                },
+                height: "220px",
               }}
             >
-              <Heading as="h3" sx={{ fontSize: 3 }}>
-                {repo.name}
-              </Heading>
-              {repo.visibility === "public" ? (
-                <UnlockIcon size={16} />
-              ) : (
-                <LockIcon size={16} />
-              )}
-            </Box>
-
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <CircleBadge
-                size={10}
+              <Box
                 sx={{
-                  backgroundColor: getLanguageColor(repo.main_language),
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 2,
                 }}
-              />
-              <Text sx={{ fontSize: 1, ml: 1 }}>{repo.main_language}</Text>
-            </Box>
+              >
+                <Heading as="h3" sx={{ fontSize: 3 }}>
+                  {repo.name}
+                </Heading>
+                {repo.visibility === "public" ? (
+                  <UnlockIcon size={16} />
+                ) : (
+                  <LockIcon size={16} />
+                )}
+              </Box>
 
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <StarIcon size={16} sx={{ mr: 1 }} />
-              <Text sx={{ fontSize: 1 }}>{repo.stargazers_count}</Text>
-            </Box>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <CircleBadge
+                  size={10}
+                  sx={{
+                    backgroundColor: getLanguageColor(repo.main_language),
+                  }}
+                />
+                <Text sx={{ fontSize: 1, ml: 1 }}>{repo.main_language}</Text>
+              </Box>
 
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <RepoForkedIcon size={16} sx={{ mr: 1 }} />
-              <Text sx={{ fontSize: 1 }}>{repo.fork_count}</Text>
-            </Box>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <StarIcon size={16} sx={{ mr: 1 }} />
+                <Text sx={{ fontSize: 1 }}>{repo.stargazers_count}</Text>
+              </Box>
 
-            <Text
-              sx={{
-                fontSize: 1,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                mt: "10px",
-              }}
-            >
-              {repo.description}
-            </Text>
-          </Box>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <RepoForkedIcon size={16} sx={{ mr: 1 }} />
+                <Text sx={{ fontSize: 1 }}>{repo.fork_count}</Text>
+              </Box>
+
+              <Text
+                sx={{
+                  fontSize: 1,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  mt: "10px",
+                }}
+              >
+                {repo.description}
+              </Text>
+            </Box>
+          </Link>
         ))}
       </Box>
     </Box>

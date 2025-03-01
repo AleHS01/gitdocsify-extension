@@ -11,6 +11,9 @@ class GitHub:
         }
 
     async def store_access_token(self, token_data):
+        if not token_data["access_token"]:
+            return
+
         try:
             supabase.table("user_github_tokens").upsert(
                 {
@@ -33,7 +36,7 @@ class GitHub:
                 .eq("user_id", user_id)
                 .execute()
             )
-            print(result)
+
             if result.data:
                 return result.data[0]["github_access_token"]
             return None
@@ -45,6 +48,22 @@ class GitHub:
     async def get_repos(self, user):
         access_token = await self.retrieve_access_token(user["id"])
         url = self.base_url + f"/users/{user['user_name']}/repos"
+        headers = {**self.base_headers, "Authorization": f"Bearer {access_token}"}
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, headers=headers)
+
+                return response.json()
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"An unexpected error occurred while fetching repo: {e}",
+            )
+
+    async def get_repo(self, user: str, repo_name: str):
+        access_token = await self.retrieve_access_token(user["id"])
+        url = self.base_url + f"/repos/{user['user_name']}/{repo_name}"
         headers = {**self.base_headers, "Authorization": f"Bearer {access_token}"}
 
         try:

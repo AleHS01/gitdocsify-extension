@@ -34,3 +34,15 @@ async def get_repos(payload: dict = Depends(verify_jwt_token)):
     res = await github.get_repos(user=user)
 
     return res
+
+
+@router.get("/repo/{repo_name}")
+async def get_repo(repo_name: str, payload: dict = Depends(verify_jwt_token)):
+    user = {
+        "id": payload["sub"],
+        "user_name": payload["user_metadata"]["preferred_username"],
+    }
+
+    res = await github.get_repo(user=user, repo_name=repo_name)
+
+    return res
