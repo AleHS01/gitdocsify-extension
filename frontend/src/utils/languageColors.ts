@@ -208,7 +208,7 @@ export const languageColors = {
   TeX: "#3D6117",
   Terra: "#00004c",
   Turing: "#cf142b",
-  TypeScript: "#2b7489",
+  TypeScript: "#3077C6",
   UnrealScript: "#a54c4d",
   VCL: "#148AA8",
   VHDL: "#adb2cb",
