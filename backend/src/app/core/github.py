@@ -10,7 +10,7 @@ class GitHub:
             "X-GitHub-Api-Version": "2022-11-28",
         }
 
-    async def store_access_token(self, token_data):
+    async def store_access_token(self, token_data: dict):
         if not token_data["access_token"]:
             return
 
@@ -28,7 +28,7 @@ class GitHub:
                 status_code=500, detail=f"An unexpected error occurred: {e}"
             )
 
-    async def retrieve_access_token(self, user_id):
+    async def retrieve_access_token(self, user_id: str):
         try:
             result = (
                 supabase.table("user_github_tokens")
@@ -45,7 +45,7 @@ class GitHub:
                 status_code=500, detail=f"An unexpected error occurred: {e}"
             )
 
-    async def get_repos(self, user):
+    async def get_repos(self, user: dict):
         access_token = await self.retrieve_access_token(user["id"])
         url = self.base_url + f"/users/{user['user_name']}/repos"
         headers = {**self.base_headers, "Authorization": f"Bearer {access_token}"}
@@ -61,8 +61,11 @@ class GitHub:
                 detail=f"An unexpected error occurred while fetching repo: {e}",
             )
 
-    async def get_repo(self, user: str, repo_name: str):
+    async def get_repo(self, user: dict, repo_name: str):
         access_token = await self.retrieve_access_token(user["id"])
+        if not access_token:
+            raise HTTPException(status_code=401, detail="GitHub access token not found")
+
         url = self.base_url + f"/repos/{user['user_name']}/{repo_name}"
         headers = {**self.base_headers, "Authorization": f"Bearer {access_token}"}
 
@@ -75,4 +78,31 @@ class GitHub:
             raise HTTPException(
                 status_code=500,
                 detail=f"An unexpected error occurred while fetching repo: {e}",
+            )
+
+    async def get_collaborators(self, user: dict, repo_name: str):
+
+        access_token = await self.retrieve_access_token(user["id"])
+        if not access_token:
+            raise HTTPException(status_code=401, detail="GitHub access token not found")
+
+        url = self.base_url + f"/repos/{user['user_name']}/{repo_name}/collaborators"
+        headers = {**self.base_headers, "Authorization": f"Bearer {access_token}"}
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, headers=headers)
+
+                if response.status_code == 403:
+                    raise HTTPException(
+                        status_code=403, detail="Forbidden: Insufficient permissions"
+                    )
+                if response.status_code == 404:
+                    raise HTTPException(status_code=404, detail="Repository not found")
+
+                return response.json()
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"An unexpected error occurred while fetching collaborators: {e}",
             )

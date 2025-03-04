@@ -28,18 +28,7 @@ const Dashboard = () => {
       try {
         const { data } = await axiosInstance.get("api/github/repo");
 
-        const filteredRepos = data.map((repo: any) => ({
-          name: repo.name,
-          clone_url: repo.clone_url,
-          created_at: new Date(repo.created_at),
-          main_language: repo.language,
-          visibility: repo.visibility,
-          description: repo.description,
-          stargazers_count: repo.stargazers_count,
-          fork_count: repo.forks_count,
-        }));
-
-        setRepos(filteredRepos as Repository[]);
+        setRepos(data as Repository[]);
       } catch (error) {
         console.error("Error fetching repos:", error);
       }

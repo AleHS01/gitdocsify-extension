@@ -31,9 +31,7 @@ async def get_repos(payload: dict = Depends(verify_jwt_token)):
         "user_name": payload["user_metadata"]["preferred_username"],
     }
 
-    res = await github.get_repos(user=user)
-
-    return res
+    return await github.get_repos(user=user)
 
 
 @router.get("/repo/{repo_name}")
@@ -43,6 +41,16 @@ async def get_repo(repo_name: str, payload: dict = Depends(verify_jwt_token)):
         "user_name": payload["user_metadata"]["preferred_username"],
     }
 
-    res = await github.get_repo(user=user, repo_name=repo_name)
+    return await github.get_repo(user=user, repo_name=repo_name)
 
-    return res
+
+@router.get("/repo/{repo_name}/collaborators")
+async def get_repo_collaborators(
+    repo_name: str, payload: dict = Depends(verify_jwt_token)
+):
+    user = {
+        "id": payload["sub"],
+        "user_name": payload["user_metadata"]["preferred_username"],
+    }
+
+    return await github.get_collaborators(user, repo_name)
