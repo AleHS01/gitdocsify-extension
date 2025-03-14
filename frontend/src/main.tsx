@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { UserProvider } from "./context/UserContext.tsx";
 import { ThemeProvider, BaseStyles } from "@primer/react";
 import { BrowserRouter } from "react-router-dom";
+import { DndContext } from "@dnd-kit/core";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -12,7 +13,9 @@ createRoot(document.getElementById("root")!).render(
       <BaseStyles>
         <BrowserRouter>
           <UserProvider>
-            <App />
+            <DndContext>
+              <App />
+            </DndContext>
           </UserProvider>
         </BrowserRouter>
       </BaseStyles>

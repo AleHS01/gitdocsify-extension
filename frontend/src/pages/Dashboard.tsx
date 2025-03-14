@@ -1,7 +1,7 @@
 import { useUser } from "../context/UserContext";
 import { Button, Text, Box, Heading, Grid, CircleBadge } from "@primer/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Repository } from "../types/repository";
 import {
   RepoForkedIcon,
@@ -28,7 +28,7 @@ const Dashboard = () => {
       try {
         const { data } = await axiosInstance.get("api/github/repo");
 
-        setRepos(data as Repository[]);
+        setRepos(data);
       } catch (error) {
         console.error("Error fetching repos:", error);
       }
@@ -94,10 +94,10 @@ const Dashboard = () => {
                 <CircleBadge
                   size={10}
                   sx={{
-                    backgroundColor: getLanguageColor(repo.main_language),
+                    backgroundColor: getLanguageColor(repo.language),
                   }}
                 />
-                <Text sx={{ fontSize: 1, ml: 1 }}>{repo.main_language}</Text>
+                <Text sx={{ fontSize: 1, ml: 1 }}>{repo.language}</Text>
               </Box>
 
               <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -107,7 +107,7 @@ const Dashboard = () => {
 
               <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                 <RepoForkedIcon size={16} sx={{ mr: 1 }} />
-                <Text sx={{ fontSize: 1 }}>{repo.fork_count}</Text>
+                <Text sx={{ fontSize: 1 }}>{repo.forks_count}</Text>
               </Box>
 
               <Text

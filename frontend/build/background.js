@@ -1,1 +1,0 @@
-chrome.runtime.onMessage.addListener((e,t,n)=>{e.action==="open_popup"&&chrome.tabs.create({url:chrome.runtime.getURL("index.html")})});chrome.runtime.onMessage.addListener((e,t,n)=>{e.action==="showAlert"&&chrome.scripting.executeScript({target:{tabId:t.tab.id},func:()=>alert("GitDocsify button clicked!")})});

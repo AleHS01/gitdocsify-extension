@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, PageLayout } from "@primer/react";
+import { Button, PageLayout } from "@primer/react";
 import { UnderlinePanels } from "@primer/react/experimental";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../utils/axios";
@@ -8,6 +8,7 @@ import axios from "axios";
 import SidePane from "../components/layout/SidePane";
 import LayoutHeader from "../components/layout/LayoutHeader";
 import { Collaborators, Repository } from "../types/repository";
+import DocumentationConfiguration from "../components/DocumentationConfiguration";
 
 const RepoView: React.FC = () => {
   const { name } = useParams();
@@ -65,23 +66,7 @@ const RepoView: React.FC = () => {
     <PageLayout>
       <LayoutHeader repo={repo} loading={loading} />
       <PageLayout.Content>
-        <Box
-          sx={{
-            px: 4,
-            pb: 4,
-            borderWidth: 1,
-            borderStyle: "solid",
-            borderColor: "border.default",
-            borderRadius: 2,
-          }}
-        >
-          <UnderlinePanels>
-            <UnderlinePanels.Tab icon={BookIcon}>
-              Documentation Configuration
-            </UnderlinePanels.Tab>
-            <UnderlinePanels.Panel></UnderlinePanels.Panel>
-          </UnderlinePanels>
-        </Box>
+        <DocumentationConfiguration repo={repo} />
       </PageLayout.Content>
       <SidePane
         collaborators={collaborators}
