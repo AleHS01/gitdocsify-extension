@@ -3,7 +3,7 @@ import { Box, CircleBadge, ProgressBar, Stack, Text } from "@primer/react";
 import { languageColors } from "../utils/languageColors";
 
 type LanguageProgressBarProp = {
-  languages: string[];
+  languages: { [key: string]: number };
   totalSize: number;
 };
 
@@ -11,12 +11,35 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
   languages,
   totalSize,
 }) => {
+  const threshold = 2.0;
+
+  const getCombinedLanguages = () => {
+    const combined = { ...languages };
+    let otherPercentage = 0;
+
+    Object.keys(languages).forEach((language) => {
+      const percentage = (languages[language] / totalSize) * 100;
+      if (percentage < threshold) {
+        otherPercentage += languages[language];
+        delete combined[language];
+      }
+    });
+
+    if (otherPercentage > 0) {
+      combined["Other"] = otherPercentage;
+    }
+
+    return combined;
+  };
+
+  const processedLanguages = getCombinedLanguages();
+
   return (
     <Box>
       <ProgressBar animated>
         {languages &&
-          Object.keys(languages).map((language: string) => {
-            const size = languages[language];
+          Object.keys(processedLanguages).map((language: string, index) => {
+            const size = processedLanguages[language];
             const percentage = (size / totalSize) * 100;
 
             return (
@@ -26,7 +49,11 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
                 aria-valuenow={percentage}
                 aria-valuetext={language}
                 sx={{
-                  bg: languageColors[language],
+                  bg: language === "Other" ? "white" : languageColors[language],
+                  marginRight:
+                    index < Object.keys(processedLanguages).length - 1
+                      ? "3px"
+                      : "0",
                 }}
               />
             );
@@ -41,8 +68,8 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
         wrap="wrap"
       >
         {languages &&
-          Object.keys(languages).map((language) => {
-            const size = languages[language];
+          Object.keys(processedLanguages).map((language) => {
+            const size = processedLanguages[language];
             const percentage = (size / totalSize) * 100;
 
             return (
@@ -55,7 +82,8 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
                 <CircleBadge
                   size={10}
                   sx={{
-                    backgroundColor: languageColors[language],
+                    backgroundColor:
+                      language === "Other" ? "white" : languageColors[language],
                   }}
                 />
                 <Text sx={{ fontSize: 1, ml: 1 }}>{language}</Text>

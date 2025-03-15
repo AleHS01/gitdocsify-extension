@@ -148,6 +148,7 @@ const DocumentationConfiguration: React.FC = () => {
                 variant="danger"
                 leadingVisual={IssueReopenedIcon}
                 onClick={() => setSections([])}
+                disabled={sections.length === 0}
               >
                 Reset Sections
               </Button>

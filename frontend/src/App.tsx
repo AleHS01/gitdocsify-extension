@@ -28,7 +28,7 @@ function App() {
       <ColorModeSwitcher />
       <Box
         sx={{
-          px: 12,
+          px: 1,
         }}
       >
         {routes}
