@@ -1,17 +1,20 @@
 import { Box, ActionMenu, ActionList, Text } from "@primer/react";
 import React from "react";
 import { Section } from "../types/section";
+import { sectionOptions } from "../utils/sectionOptions";
 
 type DroppableBoxProps = {
   section: Section;
-  handleSelect: (section: Section) => void;
-  filteredSections: Section[];
+  selectedSections: Section[];
+  handleSelect: (section: Section, index: number) => void;
+  index: number;
 };
 
 const DroppableBox: React.FC<DroppableBoxProps> = ({
   section,
+  selectedSections,
   handleSelect,
-  filteredSections,
+  index,
 }) => {
   return (
     <Box
@@ -38,11 +41,12 @@ const DroppableBox: React.FC<DroppableBoxProps> = ({
             <Text>{section.name}</Text>
           </ActionMenu.Button>
           <ActionMenu.Overlay>
-            <ActionList>
-              {filteredSections.map((option) => (
+            <ActionList selectionVariant="single">
+              {sectionOptions.map((option) => (
                 <ActionList.Item
                   key={option.name}
-                  onSelect={() => handleSelect(option)}
+                  selected={selectedSections.some((s) => s?.id === option.id)}
+                  onSelect={() => handleSelect(option, index)}
                 >
                   {option.name}
                   <ActionList.LeadingVisual>
@@ -67,11 +71,12 @@ const DroppableBox: React.FC<DroppableBoxProps> = ({
             <Text>Add Section</Text>
           </ActionMenu.Button>
           <ActionMenu.Overlay>
-            <ActionList>
-              {filteredSections.map((option) => (
+            <ActionList selectionVariant="single">
+              {sectionOptions.map((option) => (
                 <ActionList.Item
                   key={option.name}
-                  onSelect={() => handleSelect(option)}
+                  selected={selectedSections.some((s) => s?.id === option.id)}
+                  onSelect={() => handleSelect(option, -1)}
                 >
                   {option.name}
                   <ActionList.LeadingVisual>

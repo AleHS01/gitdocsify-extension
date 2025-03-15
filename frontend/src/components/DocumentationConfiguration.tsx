@@ -9,27 +9,28 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
 import SectionDialogBox from "./SectionDialogBox";
-import { sectionOptions } from "../utils/sectionOptions";
 import { Section } from "../types/section";
+import { IssueReopenedIcon } from "@primer/octicons-react";
 
 const DocumentationConfiguration: React.FC = () => {
   const [sections, setSections] = useState<Section[]>([]);
-  const [sectionsOptions, setSectionsOptions] =
-    useState<Section[]>(sectionOptions);
 
-  const handleSelect = (section: Section) => {
+  const handleSelect = (section: Section, index: number) => {
     setSections((prevSections) => {
-      if (
-        prevSections.length < 8 &&
-        !prevSections.some((s) => s.name === section.name)
-      ) {
-        return [...prevSections, section];
+      const existingIndex = prevSections.findIndex((s) => s.id === section.id);
+      const updatedSections = [...prevSections];
+
+      if (existingIndex !== -1) {
+        updatedSections.splice(existingIndex, 1);
       }
-      return prevSections;
+
+      if (index !== -1) {
+        updatedSections[index] = section;
+        return updatedSections;
+      }
+
+      return [...prevSections, section];
     });
-    setSectionsOptions((prevSectionsOptions) =>
-      prevSectionsOptions.filter((s) => s.id !== section.id)
-    );
   };
 
   const handleRemove = (name: string) => {
@@ -60,7 +61,7 @@ const DocumentationConfiguration: React.FC = () => {
   return (
     <Box
       sx={{
-        pb: 4,
+        pb: 2,
         borderBottomWidth: 1,
         borderBottomStyle: "solid",
         borderBottomColor: "border.default",
@@ -86,9 +87,10 @@ const DocumentationConfiguration: React.FC = () => {
             {Array.from({ length: 4 }).map((_, i) => (
               <DroppableBox
                 key={`left-${i}`}
+                index={i}
                 section={sections[i]}
+                selectedSections={sections}
                 handleSelect={handleSelect}
-                filteredSections={sectionsOptions}
               />
             ))}
           </Box>
@@ -104,14 +106,53 @@ const DocumentationConfiguration: React.FC = () => {
             {Array.from({ length: 4 }).map((_, i) => (
               <DroppableBox
                 key={`right-${i}`}
+                index={i + 1}
                 section={sections[i + 4]}
+                selectedSections={sections}
                 handleSelect={handleSelect}
-                filteredSections={sectionsOptions}
               />
             ))}
           </Box>
         </Stack>
-        <SectionDialogBox onDialogSubmit={handleAddCustomSection} />
+        <Box
+          sx={{
+            my: 2,
+            py: 2,
+            borderTopWidth: 1,
+            borderTopStyle: "dashed",
+            borderTopColor: "border.default",
+          }}
+        >
+          <Stack direction="horizontal" gap="normal" sx={{ width: "100%" }}>
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <SectionDialogBox onDialogSubmit={handleAddCustomSection} />
+            </Box>
+
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <Button
+                variant="danger"
+                leadingVisual={IssueReopenedIcon}
+                onClick={() => setSections([])}
+              >
+                Reset Sections
+              </Button>
+            </Box>
+          </Stack>
+        </Box>
 
         {/* <DndContext
           collisionDetection={closestCenter}

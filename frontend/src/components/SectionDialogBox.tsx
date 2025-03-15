@@ -53,7 +53,7 @@ const SectionDialogBox: React.FC<SectionDialogBoxProps> = ({
   };
 
   return (
-    <Box sx={{ width: "100%", my: 2 }}>
+    <Box sx={{ width: "100%" }}>
       <Button
         ref={buttonRef}
         leadingVisual={LightBulbIcon}

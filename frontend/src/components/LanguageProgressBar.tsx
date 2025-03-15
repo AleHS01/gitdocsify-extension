@@ -63,7 +63,7 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
                   sx={{
                     fontSize: "12px",
                     ml: 1,
-                    color: "text.secondary",
+                    color: "neutral.emphasis",
                   }}
                 >{`${percentage.toFixed(1)}%`}</Text>
               </Stack>
