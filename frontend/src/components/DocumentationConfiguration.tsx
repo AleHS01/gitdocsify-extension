@@ -26,10 +26,11 @@ const DocumentationConfiguration: React.FC = () => {
 
       if (index !== -1) {
         updatedSections[index] = section;
-        return updatedSections;
+      } else {
+        updatedSections.push(section);
       }
 
-      return [...prevSections, section];
+      return updatedSections;
     });
   };
 
