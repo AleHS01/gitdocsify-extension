@@ -1,23 +1,17 @@
 import { Box, ActionMenu, ActionList, Text } from "@primer/react";
 import React from "react";
-import { sectionOptions } from "../utils/sectionOptions";
-import { Icon } from "@primer/octicons-react";
-
-type Section = {
-  name: string;
-  icon: Icon;
-  description?: string;
-  id: string;
-};
+import { Section } from "../types/section";
 
 type DroppableBoxProps = {
   section: Section;
   handleSelect: (section: Section) => void;
+  filteredSections: Section[];
 };
 
 const DroppableBox: React.FC<DroppableBoxProps> = ({
   section,
   handleSelect,
+  filteredSections,
 }) => {
   return (
     <Box
@@ -45,7 +39,7 @@ const DroppableBox: React.FC<DroppableBoxProps> = ({
           </ActionMenu.Button>
           <ActionMenu.Overlay>
             <ActionList>
-              {sectionOptions.map((option) => (
+              {filteredSections.map((option) => (
                 <ActionList.Item
                   key={option.name}
                   onSelect={() => handleSelect(option)}
@@ -74,7 +68,7 @@ const DroppableBox: React.FC<DroppableBoxProps> = ({
           </ActionMenu.Button>
           <ActionMenu.Overlay>
             <ActionList>
-              {sectionOptions.map((option) => (
+              {filteredSections.map((option) => (
                 <ActionList.Item
                   key={option.name}
                   onSelect={() => handleSelect(option)}

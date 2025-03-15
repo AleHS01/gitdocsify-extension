@@ -8,17 +8,12 @@ import {
   Stack,
   FormControl,
 } from "@primer/react";
-import React, { useState, useRef, ReactNode, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { LightBulbIcon } from "@primer/octicons-react";
-import { colors } from "@primer/react/lib-esm/legacy-theme/ts/index";
+import { Section } from "../types/section";
 
 type SectionDialogBoxProps = {
-  onDialogSubmit: (section: {
-    name: string;
-    description: string;
-    id: string;
-    icon: ReactNode;
-  }) => void;
+  onDialogSubmit: (section: Section) => void;
 };
 
 const SectionDialogBox: React.FC<SectionDialogBoxProps> = ({

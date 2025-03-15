@@ -1,13 +1,5 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { Repository } from "../types/repository";
+import React, { useState } from "react";
 import { Box, Stack, TabNav, Button } from "@primer/react";
-import { UnderlinePanels } from "@primer/react/drafts";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import DroppableBox from "./DroppableBox";
 import {
@@ -17,26 +9,15 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
 import SectionDialogBox from "./SectionDialogBox";
-
-// type DocumentationConfigurationProp = {
-//   repo: Repository | undefined;
-// };
-type Section = {
-  name: string;
-  icon: ReactNode;
-  id: string;
-  description?: string;
-};
+import { sectionOptions } from "../utils/sectionOptions";
+import { Section } from "../types/section";
 
 const DocumentationConfiguration: React.FC = () => {
   const [sections, setSections] = useState<Section[]>([]);
-
-  useEffect(() => {
-    console.log("Sections updated:", sections);
-  }, [sections]);
+  const [sectionsOptions, setSectionsOptions] =
+    useState<Section[]>(sectionOptions);
 
   const handleSelect = (section: Section) => {
-    console.log("Adding:", section);
     setSections((prevSections) => {
       if (
         prevSections.length < 8 &&
@@ -46,6 +27,9 @@ const DocumentationConfiguration: React.FC = () => {
       }
       return prevSections;
     });
+    setSectionsOptions((prevSectionsOptions) =>
+      prevSectionsOptions.filter((s) => s.id !== section.id)
+    );
   };
 
   const handleRemove = (name: string) => {
@@ -102,9 +86,9 @@ const DocumentationConfiguration: React.FC = () => {
             {Array.from({ length: 4 }).map((_, i) => (
               <DroppableBox
                 key={`left-${i}`}
-                index={i}
                 section={sections[i]}
                 handleSelect={handleSelect}
+                filteredSections={sectionsOptions}
               />
             ))}
           </Box>
@@ -120,10 +104,9 @@ const DocumentationConfiguration: React.FC = () => {
             {Array.from({ length: 4 }).map((_, i) => (
               <DroppableBox
                 key={`right-${i}`}
-                index={i + 4}
                 section={sections[i + 4]}
                 handleSelect={handleSelect}
-                handleAddCustomSection={handleAddCustomSection}
+                filteredSections={sectionsOptions}
               />
             ))}
           </Box>
