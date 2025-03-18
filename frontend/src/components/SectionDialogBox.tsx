@@ -3,7 +3,6 @@ import {
   Dialog,
   TextInput,
   Box,
-  Text,
   Textarea,
   Stack,
   FormControl,
@@ -11,6 +10,7 @@ import {
 import React, { useState, useRef, useCallback } from "react";
 import { LightBulbIcon } from "@primer/octicons-react";
 import { Section } from "../types/section";
+import { InlineMessage } from "@primer/react/drafts";
 
 type SectionDialogBoxProps = {
   onDialogSubmit: (section: Section) => void;
@@ -103,13 +103,8 @@ const SectionDialogBox: React.FC<SectionDialogBoxProps> = ({
             </Box>
 
             {error && (
-              <Box
-                sx={{
-                  color: "#d1242f",
-                  textAlign: "center",
-                }}
-              >
-                <Text>{error}</Text>
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <InlineMessage variant="critical">{error}</InlineMessage>
               </Box>
             )}
           </Stack>

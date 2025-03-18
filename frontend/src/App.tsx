@@ -29,6 +29,7 @@ function App() {
       <Box
         sx={{
           px: 1,
+          height: "100%",
         }}
       >
         {routes}

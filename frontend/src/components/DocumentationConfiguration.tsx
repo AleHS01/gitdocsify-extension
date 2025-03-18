@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { Box, Stack, TabNav, Button } from "@primer/react";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import React from "react";
+import { Box, Stack, Button } from "@primer/react";
 import DroppableBox from "./DroppableBox";
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import SortableItem from "./SortableItem";
+
 import SectionDialogBox from "./SectionDialogBox";
 import { Section } from "../types/section";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 
-const DocumentationConfiguration: React.FC = () => {
-  const [sections, setSections] = useState<Section[]>([]);
+type DocConfigProps = {
+  sections: Section[];
+  setSections: (prev) => void;
+};
 
+const DocumentationConfiguration: React.FC<DocConfigProps> = ({
+  sections,
+  setSections,
+}) => {
   const handleSelect = (section: Section, index: number) => {
     setSections((prevSections) => {
       const existingIndex = prevSections.findIndex((s) => s.id === section.id);
@@ -34,25 +34,6 @@ const DocumentationConfiguration: React.FC = () => {
     });
   };
 
-  const handleRemove = (name: string) => {
-    setSections((prevSections) => prevSections.filter((s) => s.name !== name));
-  };
-
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-    if (active.id !== over.id) {
-      setSections((prevSections) => {
-        const activeIndex = prevSections.findIndex((s) => s.name === active.id);
-        const overIndex = prevSections.findIndex((s) => s.name === over.id);
-
-        if (activeIndex !== -1 && overIndex !== -1) {
-          return arrayMove(prevSections, activeIndex, overIndex);
-        }
-        return prevSections;
-      });
-    }
-  };
-
   const handleAddCustomSection = (newSection: Section) => {
     if (!sections.some((section) => section.id === newSection.id)) {
       setSections([...sections, newSection]);
@@ -68,9 +49,6 @@ const DocumentationConfiguration: React.FC = () => {
         borderBottomColor: "border.default",
       }}
     >
-      <TabNav aria-label="Main">
-        <TabNav.Link selected>Documentation Configuration</TabNav.Link>
-      </TabNav>
       <Box sx={{ pt: 4, px: 2 }}>
         <Stack
           direction="horizontal"
@@ -155,27 +133,6 @@ const DocumentationConfiguration: React.FC = () => {
             </Box>
           </Stack>
         </Box>
-
-        {/* <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={sections.map((section) => section.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <Stack sx={{ mt: 4, gap: 2 }}>
-              {sections.map((section) => (
-                <SortableItem
-                  key={section.name}
-                  id={section.id}
-                  name={section}
-                  onRemove={handleRemove}
-                />
-              ))}
-            </Stack>
-          </SortableContext>
-        </DndContext> */}
       </Box>
     </Box>
   );

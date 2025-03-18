@@ -11,7 +11,7 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
   languages,
   totalSize,
 }) => {
-  const threshold = 2.0;
+  const threshold = 1.9;
 
   const getCombinedLanguages = () => {
     const combined = { ...languages };

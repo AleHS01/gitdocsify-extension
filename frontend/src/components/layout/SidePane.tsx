@@ -16,7 +16,7 @@ import React from "react";
 
 type SidePaneProps = {
   collaborators: Collaborators[];
-  languages: string[];
+  languages: { [key: string]: number };
   repo: Repository | undefined;
   totalSize: number;
 };
