@@ -1,16 +1,13 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-} */
-
 .toast-container {
-  position: absolute;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 100%;
+  gap: 5px;
+  z-index: 9999;
+  width: auto;
+  justify-content: flex-end;
 }
 
 .toast-slide-in {

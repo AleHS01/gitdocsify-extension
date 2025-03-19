@@ -1,3 +1,4 @@
+import "./assets/notifications.css";
 import ColorModeSwitcher from "./components/ColorModeSwitcher";
 import { useRoutes } from "react-router-dom";
 import { Box } from "@primer/react";
@@ -5,8 +6,11 @@ import Dashboard from "./pages/Dashboard";
 import RepoView from "./pages/RepoView";
 import Login from "./pages/Login";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import ToastNotification from "./components/ToastNotification";
+import { useNotification } from "./context/NotificationContext";
 
 function App() {
+  const { notifications } = useNotification();
   const routes = useRoutes([
     { path: "/", element: <ProtectedRoute children={<Dashboard />} /> },
     { path: "/login", element: <Login /> },
@@ -33,6 +37,18 @@ function App() {
         }}
       >
         {routes}
+        <Box className="toast-container">
+          {notifications.map((toast) => (
+            <ToastNotification
+              key={toast.id}
+              id={toast.id}
+              title={toast.title}
+              description={toast.description}
+              variant={toast.variant}
+              duration={3000}
+            />
+          ))}
+        </Box>
       </Box>
     </Box>
   );

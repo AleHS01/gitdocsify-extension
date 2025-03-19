@@ -1,4 +1,4 @@
-import { Box, UnderlineNav } from "@primer/react";
+import { Box, Button, IconButton, UnderlineNav } from "@primer/react";
 import React, { useState } from "react";
 import { Section } from "../../types/section";
 import {
@@ -6,11 +6,16 @@ import {
   CodeIcon,
   EyeIcon,
   FileDirectoryOpenFillIcon,
+  DownloadIcon,
+  RepoPushIcon,
 } from "@primer/octicons-react";
 import DocumentationConfiguration from "../DocumentationConfiguration";
 import LiveEditor from "../markdown/LiveEditor";
 import LivePreviewer from "../markdown/LivePreviewer";
 import FileStructureTab from "../FileStructureTab";
+import DownloadButton from "../markdown/DownloadButton";
+import PushButton from "../markdown/PushButton";
+import { useNotification } from "../../context/NotificationContext";
 
 type TabName = "config" | "editor" | "preview" | "file";
 
@@ -19,6 +24,7 @@ const MainContent: React.FC = () => {
   const [markdown, setMarkdown] = useState<string>("");
   const [tabName, setTabName] = useState<TabName>("config");
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const { showNotification } = useNotification();
 
   const handleGenerateDoc = () => {
     if (sections.length > 0) {
@@ -30,12 +36,17 @@ const MainContent: React.FC = () => {
         setIsGenerating(false);
       }, 2000);
     } else {
-      alert("Add Sections");
+      showNotification(
+        "No Sections Selected",
+        "Please select at least one section before proceeding.",
+        "critical"
+      );
+      setTabName("config");
     }
   };
 
   return (
-    <Box>
+    <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
       <UnderlineNav aria-label="editor-previewer" sx={{ mb: 2 }}>
         <UnderlineNav.Item
           icon={SlidersIcon}
@@ -84,7 +95,30 @@ const MainContent: React.FC = () => {
           />
         )}
         {tabName === "preview" && (
-          <LivePreviewer markdown={markdown} changeTab={setTabName} />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              position: "relative",
+            }}
+          >
+            {markdown && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  display: "flex",
+                  right: 0,
+                  gap: 2,
+                }}
+              >
+                <DownloadButton markdown={markdown} />
+                <PushButton markdown={markdown} />
+              </Box>
+            )}
+
+            <LivePreviewer markdown={markdown} changeTab={setTabName} />
+          </Box>
         )}
       </Box>
     </Box>

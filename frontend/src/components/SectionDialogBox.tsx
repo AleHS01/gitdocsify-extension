@@ -11,6 +11,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { LightBulbIcon } from "@primer/octicons-react";
 import { Section } from "../types/section";
 import { InlineMessage } from "@primer/react/drafts";
+import { useNotification } from "../context/NotificationContext";
 
 type SectionDialogBoxProps = {
   onDialogSubmit: (section: Section) => void;
@@ -24,6 +25,7 @@ const SectionDialogBox: React.FC<SectionDialogBoxProps> = ({
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const { showNotification } = useNotification();
   const onDialogClose = useCallback(() => {
     setIsOpen(false);
     setTitle("");
@@ -47,6 +49,11 @@ const SectionDialogBox: React.FC<SectionDialogBoxProps> = ({
       id: title.toLowerCase().replace(/\s+/g, "-"),
       icon: LightBulbIcon,
     });
+    showNotification(
+      "Custom Section Created",
+      "Your custom section has been successfully created.",
+      "success"
+    );
     setIsOpen(false);
     setTitle("");
     setDescription("");

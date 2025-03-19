@@ -5,17 +5,16 @@ import App from "./App.tsx";
 import { UserProvider } from "./context/UserContext.tsx";
 import { ThemeProvider, BaseStyles } from "@primer/react";
 import { BrowserRouter } from "react-router-dom";
-import { DndContext } from "@dnd-kit/core";
-
+import { NotificationProvider } from "./context/NotificationContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider colorMode="auto">
       <BaseStyles>
         <BrowserRouter>
           <UserProvider>
-            <DndContext>
+            <NotificationProvider>
               <App />
-            </DndContext>
+            </NotificationProvider>
           </UserProvider>
         </BrowserRouter>
       </BaseStyles>

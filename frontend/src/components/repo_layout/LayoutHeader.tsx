@@ -22,6 +22,7 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import { Repository } from "../../types/repository";
+import { useNotification } from "../../context/NotificationContext";
 
 type LayoutHeaderProps = {
   repo: Repository | undefined;
@@ -29,6 +30,7 @@ type LayoutHeaderProps = {
 };
 
 const LayoutHeader: React.FC<LayoutHeaderProps> = ({ repo, loading }) => {
+  const { showNotification } = useNotification();
   return (
     <PageLayout.Header
       sx={{
@@ -115,12 +117,18 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({ repo, loading }) => {
                     </ActionList.LeadingVisual>
                   </ActionList.LinkItem>
                   <ActionList.Item
-                    onSelect={() =>
-                      navigator.clipboard.writeText(repo ? repo?.clone_url : "")
-                    }
+                    onSelect={() => {
+                      navigator.clipboard.writeText(
+                        repo ? repo?.clone_url : ""
+                      );
+                      showNotification(
+                        "URL Copied",
+                        "The clone URL has been copied to your clipboard.",
+                        "success"
+                      );
+                    }}
                   >
                     Copy Clone URL
-                    {/* TODO: Send Toast Notification confirming */}
                     <ActionList.LeadingVisual>
                       <CopyIcon />
                     </ActionList.LeadingVisual>

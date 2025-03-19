@@ -2,6 +2,8 @@ import { BookIcon, IssueReopenedIcon } from "@primer/octicons-react";
 import { Box, Textarea, Button } from "@primer/react";
 import { Blankslate } from "@primer/react/drafts";
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
+import DownloadButton from "./DownloadButton";
+import PushButton from "./PushButton";
 
 type LiveEditorProps = {
   isSections: boolean;
@@ -129,17 +131,27 @@ const LiveEditor: React.FC<LiveEditorProps> = ({
               }}
             />
           </Box>
-
-          <Button
-            leadingVisual={IssueReopenedIcon}
-            variant="primary"
-            onClick={handleGenerateMarkdown}
-            loading={isGenerating}
-            disabled={!markdown && !isSections}
-            sx={{ width: "100%" }}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 2,
+            }}
           >
-            Regenerate
-          </Button>
+            <DownloadButton markdown={markdown} />
+            <Button
+              leadingVisual={IssueReopenedIcon}
+              variant="primary"
+              onClick={handleGenerateMarkdown}
+              loading={isGenerating}
+              disabled={!markdown && !isSections}
+              sx={{ width: "100%" }}
+            >
+              Regenerate
+            </Button>
+
+            <PushButton markdown={markdown} />
+          </Box>
         </Box>
       ) : (
         <Blankslate spacious>
