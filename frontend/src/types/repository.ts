@@ -24,3 +24,12 @@ export type RepoOwner = {
   html_url: string;
   avatar_url: string;
 };
+
+export type RepoFile = {
+  mode: string;
+  path: string;
+  sha: string;
+  size: number;
+  type: "tree" | "blob";
+  url: string;
+};

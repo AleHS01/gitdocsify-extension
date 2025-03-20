@@ -106,3 +106,32 @@ class GitHub:
                 status_code=500,
                 detail=f"An unexpected error occurred while fetching collaborators: {e}",
             )
+
+    async def get_files(self, user: dict, repo_name: str, branch_name: str):
+        access_token = await self.retrieve_access_token(user["id"])
+        if not access_token:
+            raise HTTPException(status_code=401, detail="GitHub access token not found")
+
+        url = (
+            self.base_url
+            + f"/repos/{user['user_name']}/{repo_name}/git/trees/{branch_name}?recursive=1"
+        )
+        headers = {**self.base_headers, "Authorization": f"Bearer {access_token}"}
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, headers=headers)
+
+                if response.status_code == 403:
+                    raise HTTPException(
+                        status_code=403, detail="Forbidden: Insufficient permissions"
+                    )
+                if response.status_code == 404:
+                    raise HTTPException(status_code=404, detail="Repository not found")
+
+                return response.json()
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"An unexpected error occurred while fetching {repo_name} files: {e}",
+            )

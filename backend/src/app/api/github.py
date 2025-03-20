@@ -53,4 +53,18 @@ async def get_repo_collaborators(
         "user_name": payload["user_metadata"]["preferred_username"],
     }
 
-    return await github.get_collaborators(user, repo_name)
+    return await github.get_collaborators(user=user, repo_name=repo_name)
+
+
+@router.get("/repo/{repo_name}/files/{branch_name}")
+async def get_repo_file(
+    repo_name: str, branch_name: str, payload: dict = Depends(verify_jwt_token)
+):
+    user = {
+        "id": payload["sub"],
+        "user_name": payload["user_metadata"]["preferred_username"],
+    }
+
+    return await github.get_files(
+        user=user, repo_name=repo_name, branch_name=branch_name
+    )

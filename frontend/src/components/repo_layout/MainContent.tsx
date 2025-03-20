@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, UnderlineNav } from "@primer/react";
+import { Box, UnderlineNav } from "@primer/react";
 import React, { useState } from "react";
 import { Section } from "../../types/section";
 import {
@@ -6,8 +6,6 @@ import {
   CodeIcon,
   EyeIcon,
   FileDirectoryOpenFillIcon,
-  DownloadIcon,
-  RepoPushIcon,
 } from "@primer/octicons-react";
 import DocumentationConfiguration from "../DocumentationConfiguration";
 import LiveEditor from "../markdown/LiveEditor";
@@ -16,10 +14,14 @@ import FileStructureTab from "../FileStructureTab";
 import DownloadButton from "../markdown/DownloadButton";
 import PushButton from "../markdown/PushButton";
 import { useNotification } from "../../context/NotificationContext";
+import { Repository } from "../../types/repository";
 
 type TabName = "config" | "editor" | "preview" | "file";
 
-const MainContent: React.FC = () => {
+type MainContentProps = {
+  repo: Repository | undefined;
+};
+const MainContent: React.FC<MainContentProps> = ({ repo }) => {
   const [sections, setSections] = useState<Section[]>([]);
   const [markdown, setMarkdown] = useState<string>("");
   const [tabName, setTabName] = useState<TabName>("config");
@@ -84,7 +86,9 @@ const MainContent: React.FC = () => {
             setSections={setSections}
           />
         )}
-        {tabName === "file" && <FileStructureTab />}
+        {tabName === "file" && (
+          <FileStructureTab branchName={repo?.default_branch} />
+        )}
         {tabName === "editor" && (
           <LiveEditor
             markdown={markdown}

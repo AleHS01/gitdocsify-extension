@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, PageLayout } from "@primer/react";
+import { Box, PageLayout } from "@primer/react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../utils/axios";
 import axios from "axios";
@@ -7,8 +7,6 @@ import SidePane from "../components/repo_layout/SidePane";
 import LayoutHeader from "../components/repo_layout/LayoutHeader";
 import { Collaborators, Repository } from "../types/repository";
 import MainContent from "../components/repo_layout/MainContent";
-import Footer from "../components/repo_layout/Footer";
-import { DownloadIcon, RepoPushIcon } from "@primer/octicons-react";
 
 const RepoView: React.FC = () => {
   const { name } = useParams();
@@ -67,7 +65,7 @@ const RepoView: React.FC = () => {
       <PageLayout>
         <LayoutHeader repo={repo} loading={loading} />
         <PageLayout.Content>
-          <MainContent />
+          <MainContent repo={repo} />
         </PageLayout.Content>
         <SidePane
           collaborators={collaborators}
