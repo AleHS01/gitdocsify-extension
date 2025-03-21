@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 from src.app.core.jwt import verify_jwt_token
 from src.app.core.github import GitHub
 from pydantic import BaseModel

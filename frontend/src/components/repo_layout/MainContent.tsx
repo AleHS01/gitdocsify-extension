@@ -15,6 +15,7 @@ import DownloadButton from "../markdown/DownloadButton";
 import PushButton from "../markdown/PushButton";
 import { useNotification } from "../../context/NotificationContext";
 import { Repository } from "../../types/repository";
+import axiosInstance from "../../utils/axios";
 
 type TabName = "config" | "editor" | "preview" | "file";
 
@@ -28,21 +29,41 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const { showNotification } = useNotification();
 
-  const handleGenerateDoc = () => {
+  const handleGenerateDoc = async () => {
     if (sections.length > 0) {
       setIsGenerating(true);
-      setTimeout(() => {
-        setMarkdown(
-          `# AI Generated Content\n\nThis is an example **Markdown** text.\n\n- Item 1\n- Item 2\n\n> Blockquote Example`
-        );
+      try {
+        const {
+          data: { markdown },
+        } = await axiosInstance.post("api/openai", {
+          sections: sections.map((s) => {
+            return {
+              name: s.name,
+              description: s.description ? s.description : "",
+              id: s.id,
+            };
+          }),
+          project_title: repo?.name,
+        });
+
+        setMarkdown(markdown);
         setIsGenerating(false);
-      }, 2000);
+        showNotification(
+          "README Documentation Generated",
+          "You can now review and use it for your project.",
+          "success"
+        );
+      } catch (error) {
+        console.error(error);
+        setIsGenerating(false);
+      }
     } else {
       showNotification(
         "No Sections Selected",
         "Please select at least one section before proceeding.",
         "critical"
       );
+      setIsGenerating(false);
       setTabName("config");
     }
   };
