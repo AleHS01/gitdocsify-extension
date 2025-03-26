@@ -1,5 +1,6 @@
 from .supabase import supabase
 import httpx
+import base64
 from fastapi import HTTPException
 
 
@@ -134,4 +135,33 @@ class GitHub:
             raise HTTPException(
                 status_code=500,
                 detail=f"An unexpected error occurred while fetching {repo_name} files: {e}",
+            )
+
+    async def get_file_content(self, user: dict, repo_name: str, file_path: str):
+        access_token = await self.retrieve_access_token(user["id"])
+        if not access_token:
+            raise HTTPException(status_code=401, detail="GitHub access token not found")
+
+        url = (
+            self.base_url
+            + f"/repos/{user['user_name']}/{repo_name}/contents/{file_path}"
+        )
+        headers = {**self.base_headers, "Authorization": f"Bearer {access_token}"}
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, headers=headers)
+                data = response.json()
+
+                file_content = data["content"]
+                file_content_encoding = data.get("encoding")
+                if file_content_encoding == "base64":
+                    file_content = base64.b64decode(file_content).decode()
+
+                return file_content
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"A nunexpected error occurred while fetching file content: {e}",
             )

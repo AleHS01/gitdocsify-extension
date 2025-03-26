@@ -21,7 +21,13 @@
     "workflow": {
       "input": "Full content of a relevant file.",
       "output": "A JSON object containing the file path, extracted code snippets, and a short summary (if necessary)."
-    }
+    },
+    "additional_instructions": {
+    "chunking": {
+      "context": "The file is being sent in multiple chunks due to size limitations. Consider continuity across chunks.",
+      "handling": "Maintain logical consistency between extracted code snippets across chunks.",
+      "reassembly": "Ensure extracted code can be combined meaningfully when reassembled."
+    },
   },
   "example": {
     "file_path": "/backend/app/main.py",

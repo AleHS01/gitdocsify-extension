@@ -35,17 +35,19 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
       try {
         const {
           data: { markdown },
-        } = await axiosInstance.post("api/openai", {
+        } = await axiosInstance.post("api/documentation", {
           sections: sections.map((s) => {
             return {
               name: s.name,
-              description: s.description ? s.description : "",
+              description: s.description || "",
               id: s.id,
             };
           }),
-          project_title: repo?.name,
+          project: {
+            project_name: repo?.name,
+            branch_name: repo?.default_branch,
+          },
         });
-
         setMarkdown(markdown);
         setIsGenerating(false);
         showNotification(
