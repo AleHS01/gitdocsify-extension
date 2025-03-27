@@ -32,6 +32,12 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
   const handleGenerateDoc = async () => {
     if (sections.length > 0) {
       setIsGenerating(true);
+      showNotification(
+        "Generating Documentation...",
+        "Scanning your repository, extracting key files, and generating documentation. Please stay on this page to avoid progress loss.",
+        "warning",
+        10000
+      );
       try {
         const {
           data: { markdown },
@@ -58,6 +64,11 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
       } catch (error) {
         console.error(error);
         setIsGenerating(false);
+        showNotification(
+          "An error occurred",
+          "There was an issue generating the documentation.",
+          "critical"
+        );
       }
     } else {
       showNotification(

@@ -16,8 +16,13 @@ class FileSelection(BaseModel):
     relevant_files: list[str]
 
 
+class Code(BaseModel):
+    code: str
+    file_path: str
+
+
 class CodeExtraction(BaseModel):
-    relevant_code_snippets: list[str]
+    relevant_code_snippets: list[Code]
 
 
 class CustomJSONEncoder(json.JSONEncoder):
@@ -65,51 +70,7 @@ class DocumentationGenerator:
 
         return completion.choices[0].message.parsed
 
-    async def get_relevant_files(self):
-        files_paths = await github.get_files(
-            self.user, self.project.project_name, self.project.branch_name
-        )
-
-        filtered_files = [
-            {"path": file["path"], "type": file["type"]} for file in files_paths["tree"]
-        ]
-
-        response = self.call_openai(
-            self.file_selection_prompt,
-            json.dumps({"files": filtered_files}),
-            FileSelection,
-        )
-        return response.relevant_files
-
-    async def extract_important_code(self, file_paths: list[str]):
-        extracted_data = []
-
-        for file_path in file_paths:
-            file_content = await github.get_file_content(
-                self.user, self.project.project_name, file_path
-            )
-
-            chunks = self.__split_into_chunks(file_content, max_tokens=118000)
-
-            for i, chunk in enumerate(chunks):
-                response = self.call_openai(
-                    self.code_extraction_prompt,
-                    json.dumps(
-                        {
-                            "file_path": file_path,
-                            "chunk_index": i,
-                            "total_chunks": len(chunks),
-                            "content": chunk,
-                        }
-                    ),
-                    CodeExtraction,
-                )
-
-                extracted_data.append(response.relevant_code_snippets)
-
-        return extracted_data
-
-    def __split_into_chunks(self, text: str, max_tokens: int):
+    def __split_into_chunks(self, text: str, max_tokens: int = 120000):
         words = text.split()
         chunks = []
         current_chunk = []
@@ -129,6 +90,54 @@ class DocumentationGenerator:
 
         return chunks
 
+    async def get_relevant_files(self, sections: list[dict]):
+        self.files_paths = await github.get_files(
+            self.user, self.project.project_name, self.project.branch_name
+        )
+
+        filtered_files = [
+            {"path": file["path"], "type": file["type"]}
+            for file in self.files_paths["tree"]
+        ]
+
+        response = self.call_openai(
+            self.file_selection_prompt,
+            json.dumps(
+                {"files": filtered_files, "user_selected_sections": sections},
+                cls=CustomJSONEncoder,
+            ),
+            FileSelection,
+        )
+        return response.relevant_files
+
+    async def extract_important_code(self, file_paths: list[str]):
+        extracted_data = []
+
+        for file_path in file_paths:
+            file_content = await github.get_file_content(
+                self.user, self.project.project_name, file_path
+            )
+
+            chunks = self.__split_into_chunks(file_content)
+
+            for i, chunk in enumerate(chunks):
+                response = self.call_openai(
+                    self.code_extraction_prompt,
+                    json.dumps(
+                        {
+                            "file_path": file_path,
+                            "chunk_index": i,
+                            "total_chunks": len(chunks),
+                            "content": chunk,
+                        }
+                    ),
+                    CodeExtraction,
+                )
+
+                extracted_data.append(response)
+
+        return extracted_data
+
     def generate_readme(self, extracted_code: str, sections: list[dict]):
         response = self.call_openai(
             self.documentation_generator_prompt,
@@ -137,6 +146,8 @@ class DocumentationGenerator:
                     "project_name": self.project.project_name,
                     "extracted_code": extracted_code,
                     "user_selected_sections": sections,
+                    "github_user_name": self.user["user_name"],
+                    "file_tree": self.files_paths,
                 },
                 cls=CustomJSONEncoder,
             ),
@@ -147,7 +158,7 @@ class DocumentationGenerator:
 
     async def run_pipeline(self, sections: list[dict]) -> str:
 
-        relevant_files = await self.get_relevant_files()
+        relevant_files = await self.get_relevant_files(sections)
 
         extracted_code = await self.extract_important_code(relevant_files)
 

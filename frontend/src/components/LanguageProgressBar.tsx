@@ -36,7 +36,7 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
 
   return (
     <Box>
-      <ProgressBar animated>
+      <ProgressBar animated aria-valuetext="language">
         {languages &&
           Object.keys(processedLanguages).map((language: string, index) => {
             const size = processedLanguages[language];

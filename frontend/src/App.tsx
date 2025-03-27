@@ -45,7 +45,7 @@ function App() {
               title={toast.title}
               description={toast.description}
               variant={toast.variant}
-              duration={3000}
+              duration={toast.duration}
             />
           ))}
         </Box>
