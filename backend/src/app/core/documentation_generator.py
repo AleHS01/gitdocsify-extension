@@ -91,19 +91,19 @@ class DocumentationGenerator:
         return chunks
 
     async def get_relevant_files(self, sections: list[dict]):
-        self.files_paths = await github.get_files(
+        github_files_paths = await github.get_files(
             self.user, self.project.project_name, self.project.branch_name
         )
 
-        filtered_files = [
+        self.files_paths = [
             {"path": file["path"], "type": file["type"]}
-            for file in self.files_paths["tree"]
+            for file in github_files_paths["tree"]
         ]
 
         response = self.call_openai(
             self.file_selection_prompt,
             json.dumps(
-                {"files": filtered_files, "user_selected_sections": sections},
+                {"files": self.files_paths, "user_selected_sections": sections},
                 cls=CustomJSONEncoder,
             ),
             FileSelection,

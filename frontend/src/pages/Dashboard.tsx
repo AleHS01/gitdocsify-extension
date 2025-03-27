@@ -1,7 +1,6 @@
 import { useUser } from "../context/UserContext";
-import { Button, Text, Box, Heading, Grid, CircleBadge } from "@primer/react";
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { Button, Text, Box, Heading, CircleBadge } from "@primer/react";
+import { useEffect, useState } from "react";
 import { Repository } from "../types/repository";
 import {
   RepoForkedIcon,
@@ -12,6 +11,7 @@ import {
 import { languageColors } from "../utils/languageColors";
 import axiosInstance from "../utils/axios";
 import { Link } from "react-router-dom";
+import LoadingScreen from "./LoadingScreen";
 
 const getLanguageColor = (language: string) => {
   if (!language) return "transparent";
@@ -22,6 +22,7 @@ const getLanguageColor = (language: string) => {
 const Dashboard = () => {
   const { user, signOut } = useUser();
   const [repos, setRepos] = useState<Repository[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchRepos = async () => {
@@ -29,6 +30,7 @@ const Dashboard = () => {
         const { data } = await axiosInstance.get("api/github/repo");
 
         setRepos(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching repos:", error);
       }
@@ -36,6 +38,10 @@ const Dashboard = () => {
 
     fetchRepos();
   }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Box sx={{ p: 4 }}>

@@ -7,6 +7,7 @@ import SidePane from "../components/repo_layout/SidePane";
 import LayoutHeader from "../components/repo_layout/LayoutHeader";
 import { Collaborators, Repository } from "../types/repository";
 import MainContent from "../components/repo_layout/MainContent";
+import LoadingScreen from "./LoadingScreen";
 
 const RepoView: React.FC = () => {
   const { name } = useParams();
@@ -57,7 +58,7 @@ const RepoView: React.FC = () => {
   };
 
   if (loading) {
-    return; // TODO: Create a Skeleton
+    return <LoadingScreen />;
   }
 
   return (

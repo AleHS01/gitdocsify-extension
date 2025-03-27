@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import ToastNotification from "./components/ToastNotification";
 import { useNotification } from "./context/NotificationContext";
+import Footer from "./components/Footer";
 
 function App() {
   const { notifications } = useNotification();
@@ -50,6 +51,7 @@ function App() {
           ))}
         </Box>
       </Box>
+      {/* <Footer /> */}
     </Box>
   );
 }
