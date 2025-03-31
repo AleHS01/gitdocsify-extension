@@ -18,12 +18,19 @@ class Section(BaseModel):
 
 class Project(BaseModel):
     project_name: str
+    project_description: str
     branch_name: str
+
+
+class AdditionalData(BaseModel):
+    additional_info: str
+    emojis_enabled: bool
 
 
 class DocumentationData(BaseModel):
     sections: list[Section]
     project: Project
+    additional_data: AdditionalData
 
 
 @router.post("/")
@@ -37,6 +44,8 @@ async def generate_documentation(
 
     doc_generator = DocumentationGenerator(user, documentation_data.project)
 
-    markdown = await doc_generator.run_pipeline(documentation_data.sections)
+    markdown = await doc_generator.run_pipeline(
+        documentation_data.sections, documentation_data.additional_data
+    )
 
     return markdown

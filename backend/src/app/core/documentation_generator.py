@@ -71,19 +71,26 @@ class DocumentationGenerator:
         return completion.choices[0].message.parsed
 
     def __split_into_chunks(self, text: str, max_tokens: int = 120000):
+        tokenized_text = self.tokenizer.encode(text)
+
+        if len(tokenized_text) <= max_tokens:
+            return [text]
+
         words = text.split()
         chunks = []
         current_chunk = []
+        current_tokens = 0
 
         for word in words:
-            if (
-                len(self.tokenizer.encode(" ".join(current_chunk + [word])))
-                > max_tokens
-            ):
+            word_tokens = len(self.tokenizer.encode(word))
+
+            if current_tokens + word_tokens > max_tokens:
                 chunks.append(" ".join(current_chunk))
                 current_chunk = [word]
+                current_tokens = word_tokens
             else:
                 current_chunk.append(word)
+                current_tokens += word_tokens
 
         if current_chunk:
             chunks.append(" ".join(current_chunk))
@@ -138,16 +145,21 @@ class DocumentationGenerator:
 
         return extracted_data
 
-    def generate_readme(self, extracted_code: str, sections: list[dict]):
+    def generate_readme(
+        self, extracted_code: str, sections: list[dict], additional_data: dict
+    ):
         response = self.call_openai(
             self.documentation_generator_prompt,
             json.dumps(
                 {
                     "project_name": self.project.project_name,
+                    "project_description": self.project.project_description,
                     "extracted_code": extracted_code,
                     "user_selected_sections": sections,
                     "github_user_name": self.user["user_name"],
                     "file_tree": self.files_paths,
+                    "additional_info": additional_data.additional_info,
+                    "emojis_enabled?": additional_data.emojis_enabled,
                 },
                 cls=CustomJSONEncoder,
             ),
@@ -156,12 +168,12 @@ class DocumentationGenerator:
 
         return response
 
-    async def run_pipeline(self, sections: list[dict]) -> str:
+    async def run_pipeline(self, sections: list[dict], additional_data: dict) -> str:
 
         relevant_files = await self.get_relevant_files(sections)
 
         extracted_code = await self.extract_important_code(relevant_files)
 
-        readme_content = self.generate_readme(extracted_code, sections)
+        readme_content = self.generate_readme(extracted_code, sections, additional_data)
 
         return readme_content

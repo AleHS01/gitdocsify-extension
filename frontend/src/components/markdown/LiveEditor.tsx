@@ -1,6 +1,6 @@
 import { BookIcon, IssueReopenedIcon } from "@primer/octicons-react";
 import { Box, Textarea, Button } from "@primer/react";
-import { Blankslate } from "@primer/react/drafts";
+import { Blankslate, InlineMessage } from "@primer/react/drafts";
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import DownloadButton from "./DownloadButton";
 import PushButton from "./PushButton";
@@ -81,6 +81,12 @@ const LiveEditor: React.FC<LiveEditorProps> = ({
             gap: 3,
           }}
         >
+          <Box mb={2}>
+            <InlineMessage variant="warning">
+              Please review the generated documentation for any missing details.
+              The system may not have full context, so ensure accuracy.
+            </InlineMessage>
+          </Box>
           <Box
             display="flex"
             sx={{

@@ -6,7 +6,7 @@ import "../../../node_modules/github-markdown-css/github-markdown.css";
 import "../../../node_modules/prism-themes/themes/prism-vsc-dark-plus.css";
 import React from "react";
 import { EyeClosedIcon } from "@primer/octicons-react";
-import { Blankslate } from "@primer/react/drafts";
+import { Blankslate, InlineMessage } from "@primer/react/drafts";
 import rehypeRaw from "rehype-raw";
 
 type TabName = "config" | "editor" | "preview" | "file";
@@ -33,12 +33,20 @@ const LivePreviewer: React.FC<LivePreviewerProps> = ({
       }}
     >
       {markdown ? (
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw, rehypePrism]}
-        >
-          {markdown}
-        </ReactMarkdown>
+        <Box>
+          <Box mb={2}>
+            <InlineMessage variant="warning">
+              Please review the generated documentation for any missing details.
+              The system may not have full context, so ensure accuracy.
+            </InlineMessage>
+          </Box>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw, rehypePrism]}
+          >
+            {markdown}
+          </ReactMarkdown>
+        </Box>
       ) : (
         <Blankslate spacious>
           <Blankslate.Visual>

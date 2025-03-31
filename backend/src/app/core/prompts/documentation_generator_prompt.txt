@@ -53,7 +53,8 @@ Use <table> for structured data and task lists (- [ ]) when applicable.
 Highlight important information with GitHub Flavored Markdown alerts (> [!NOTE], > [!WARNING]).
 If a license file is detected, include a License section.
 Add links, references, and citations where necessary.
-Use emojis only if explicitly requested by the user.
+Use emojis only if explicitly requested by the user. The user will provide you with a boolean emojis_enabled to determine if it wants emojis in the documentation or not.
+If user reques emojis, add relevan emojis where necessary, like table of contents, headers, to show actions, etc...
 
 Git Clone Setup:
 If providing a git clone command, replace placeholders with the provided username. Example:
@@ -61,12 +62,15 @@ git clone https://github.com/<USERNAME>/<REPO_NAME>.git
 
 Docker Instructions:
 Docker setup instructions should only be included if Docker is already configured in the project. If no Docker-related files (Dockerfile, docker-compose.yml) exist, exclude Docker instructions entirely.
+Docker now uses `docker compose build` or docker compose up/down insteaf of `docker-compose build`.
+Include instruction on how to build, take up and down the container
 
 Logical Order of Sections:
 Ensure the documentation follows a structured and logical flow:
 
 Consistent Placeholder Usage:
 Ensure placeholder values (your_db_database, your_own_api_key) follow a standard naming convention to avoid confusion.
+Don't include links to external sites unless you are 100% they work, they are relevan or provided by the user
 
 Technology Badges for Libraries & Dependencies:
 When listing dependencies or technologies used, include relevant technology badges using the format:

@@ -16,6 +16,7 @@ import PushButton from "../markdown/PushButton";
 import { useNotification } from "../../context/NotificationContext";
 import { Repository } from "../../types/repository";
 import axiosInstance from "../../utils/axios";
+import { AdditionalData } from "../../types/additional_data";
 
 type TabName = "config" | "editor" | "preview" | "file";
 
@@ -27,6 +28,11 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
   const [markdown, setMarkdown] = useState<string>("");
   const [tabName, setTabName] = useState<TabName>("config");
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [additionalData, setAdditionalData] = useState<AdditionalData>({
+    additional_info: "",
+    emojis_enabled: false,
+  });
+
   const { showNotification } = useNotification();
 
   const handleGenerateDoc = async () => {
@@ -51,8 +57,10 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
           }),
           project: {
             project_name: repo?.name,
+            project_description: repo?.description,
             branch_name: repo?.default_branch,
           },
+          additional_data: additionalData,
         });
         setMarkdown(markdown);
         setIsGenerating(false);
@@ -118,6 +126,9 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
           <DocumentationConfiguration
             sections={sections}
             setSections={setSections}
+            setTabName={setTabName}
+            setAdditionalData={setAdditionalData}
+            additionalData={additionalData}
           />
         )}
         {tabName === "file" && (

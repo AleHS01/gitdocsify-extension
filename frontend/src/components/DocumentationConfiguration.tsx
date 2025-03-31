@@ -1,19 +1,34 @@
 import React from "react";
-import { Box, Stack, Button } from "@primer/react";
+import {
+  Box,
+  Stack,
+  Button,
+  FormControl,
+  Textarea,
+  ToggleSwitch,
+  Text,
+} from "@primer/react";
 import DroppableBox from "./DroppableBox";
 
 import SectionDialogBox from "./SectionDialogBox";
 import { Section } from "../types/section";
-import { IssueReopenedIcon } from "@primer/octicons-react";
+import { CommandPaletteIcon, IssueReopenedIcon } from "@primer/octicons-react";
+import { AdditionalData } from "../types/additional_data";
 
 type DocConfigProps = {
   sections: Section[];
-  setSections: (prev) => void;
+  setSections: (prev: Section[]) => void;
+  setTabName: (prev: string) => void;
+  setAdditionalData: (prev: AdditionalData) => void;
+  additionalData: AdditionalData;
 };
 
 const DocumentationConfiguration: React.FC<DocConfigProps> = ({
   sections,
   setSections,
+  setTabName,
+  setAdditionalData,
+  additionalData,
 }) => {
   const handleSelect = (section: Section, index: number) => {
     setSections((prevSections) => {
@@ -49,7 +64,25 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
         borderBottomColor: "border.default",
       }}
     >
-      <Box sx={{ pt: 4, px: 2 }}>
+      <Box
+        sx={{
+          px: 2,
+        }}
+      >
+        <Text as="h4">Documentation Configuration</Text>
+        <Text
+          sx={{
+            color: "fg.muted",
+            fontSize: 1,
+          }}
+        >
+          Select up to 10 sections and customize your README with optional
+          features like emojis. Add extra details in 'Additional Information' to
+          tailor it to your project!
+        </Text>
+      </Box>
+
+      <Box sx={{ p: 2 }}>
         <Stack
           direction="horizontal"
           gap="normal"
@@ -63,7 +96,7 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
               gap: "10px",
             }}
           >
-            {Array.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <DroppableBox
                 key={`left-${i}`}
                 index={i}
@@ -82,7 +115,7 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
               gap: "10px",
             }}
           >
-            {Array.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <DroppableBox
                 key={`right-${i}`}
                 index={i + 1}
@@ -93,6 +126,57 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
             ))}
           </Box>
         </Stack>
+
+        <Box
+          sx={{
+            my: 2,
+            py: 2,
+            borderTopWidth: 1,
+            borderTopStyle: "dashed",
+            borderTopColor: "border.default",
+          }}
+        >
+          <FormControl sx={{ width: "100%" }}>
+            <FormControl.Label>
+              Additional Information (Optional)
+            </FormControl.Label>
+            <Textarea
+              sx={{ width: "100%" }}
+              resize="none"
+              value={additionalData.additional_info}
+              placeholder="Provide any extra details, comments, or specific instructions for the generator to consider when generating the documentation."
+              onChange={(e) =>
+                setAdditionalData((prev) => ({
+                  ...prev,
+                  additional_info: e.target.value,
+                }))
+              }
+            />
+          </FormControl>
+        </Box>
+        <Box
+          sx={{
+            my: 2,
+            py: 2,
+            borderTopWidth: 1,
+            borderTopStyle: "dashed",
+            borderTopColor: "border.default",
+          }}
+        >
+          <Stack direction="horizontal" align="center">
+            <div id="size-toggle-label-small">Enable Emojis</div>
+            <ToggleSwitch
+              size="small"
+              aria-labelledby="size-toggle-label-small"
+              onChange={(state) =>
+                setAdditionalData((prev) => ({
+                  ...prev,
+                  emojis_enabled: state,
+                }))
+              }
+            />
+          </Stack>
+        </Box>
         <Box
           sx={{
             my: 2,
@@ -129,6 +213,23 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
                 disabled={sections.length === 0}
               >
                 Reset Sections
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <Button
+                variant="primary"
+                onClick={() => setTabName("editor")}
+                leadingVisual={CommandPaletteIcon}
+                disabled={sections.length === 0}
+              >
+                Documentation Editor
               </Button>
             </Box>
           </Stack>
