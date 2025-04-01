@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import supabase from "../lib/supabase";
 import { User } from "../types/user";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { createUserData } from "../utils/user";
 import axiosInstance from "../utils/axios";
 
@@ -129,6 +129,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       provider: "github",
       options: {
         scopes: "repo read:user project",
+        redirectTo: "http://localhost:5173/dashboard",
       },
     });
 

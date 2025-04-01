@@ -9,11 +9,19 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import ToastNotification from "./components/ToastNotification";
 import { useNotification } from "./context/NotificationContext";
 import Footer from "./components/Footer";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const { notifications } = useNotification();
   const routes = useRoutes([
-    { path: "/", element: <ProtectedRoute children={<Dashboard />} /> },
+    {
+      path: "/",
+      element: <LandingPage />,
+    },
+    {
+      path: "/dashboard",
+      element: <ProtectedRoute children={<Dashboard />} />,
+    },
     { path: "/login", element: <Login /> },
     {
       path: "/repo/:name",
@@ -49,9 +57,9 @@ function App() {
               duration={toast.duration}
             />
           ))}
+          <Footer />
         </Box>
       </Box>
-      {/* <Footer /> */}
     </Box>
   );
 }
