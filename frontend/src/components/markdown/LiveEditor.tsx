@@ -4,6 +4,7 @@ import { Blankslate, InlineMessage } from "@primer/react/drafts";
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import DownloadButton from "./DownloadButton";
 import PushButton from "./PushButton";
+import { Repository } from "../../types/repository";
 
 type LiveEditorProps = {
   isSections: boolean;
@@ -11,6 +12,7 @@ type LiveEditorProps = {
   handleMarkdownChange: (md: string) => void;
   isGenerating: boolean;
   handleGenerateMarkdown: () => void;
+  repo: Repository | undefined;
 };
 
 const LiveEditor: React.FC<LiveEditorProps> = ({
@@ -19,6 +21,7 @@ const LiveEditor: React.FC<LiveEditorProps> = ({
   isGenerating,
   handleGenerateMarkdown,
   isSections,
+  repo,
 }) => {
   const [lineNumbers, setLineNumbers] = useState<string[]>(["1"]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -28,8 +31,9 @@ const LiveEditor: React.FC<LiveEditorProps> = ({
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
         textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        const lines = markdown.split("\n").map((_, i) => (i + 1).toString());
-        setLineNumbers(lines);
+        // const lines = markdown.split("\n").map((_, i) => (i + 1).toString());
+        // setLineNumbers(lines);
+        console.log("mardkown= ", markdown);
       }
     };
 
@@ -156,7 +160,7 @@ const LiveEditor: React.FC<LiveEditorProps> = ({
               Regenerate
             </Button>
 
-            <PushButton markdown={markdown} />
+            <PushButton markdown={markdown} repo={repo} />
           </Box>
         </Box>
       ) : (

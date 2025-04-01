@@ -42,11 +42,8 @@ async def generate_documentation(
         "id": payload["sub"],
         "user_name": payload["user_metadata"]["preferred_username"],
     }
-
     doc_generator = DocumentationGenerator(user, documentation_data.project)
-    print(f"aditional_data = {documentation_data.additional_data}")
     markdown = await doc_generator.run_pipeline(
         documentation_data.sections, documentation_data.additional_data
     )
-
     return markdown

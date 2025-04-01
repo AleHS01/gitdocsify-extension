@@ -21,7 +21,7 @@ const RepoView: React.FC = () => {
     const getRepository = async () => {
       try {
         const { data } = await axiosInstance.get(`api/github/repo/${name}`);
-        console.log(data);
+
         setRepo(data);
         await getCollaborators();
         await fetchLanguages(data.languages_url);

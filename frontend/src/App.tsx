@@ -46,6 +46,7 @@ function App() {
         }}
       >
         {routes}
+        <Footer />
         <Box className="toast-container">
           {notifications.map((toast) => (
             <ToastNotification
@@ -57,7 +58,6 @@ function App() {
               duration={toast.duration}
             />
           ))}
-          <Footer />
         </Box>
       </Box>
     </Box>

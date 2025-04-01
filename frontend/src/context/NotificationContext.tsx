@@ -38,7 +38,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     title: React.ReactNode,
     description: React.ReactNode,
     variant: "critical" | "info" | "success" | "upsell" | "warning",
-    duration: number = 3000
+    duration: number = 5000
   ) => {
     const newToast = {
       id: Date.now(),

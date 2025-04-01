@@ -39,13 +39,13 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
   const handleGenerateDoc = async () => {
     if (sections.length > 0) {
       setIsGenerating(true);
-      showNotification(
-        "Generating Documentation...",
-        "Scanning your repository, extracting key files, and generating documentation. Please stay on this page to avoid progress loss.",
-        "warning",
-        10000
-      );
       try {
+        showNotification(
+          "Generating Documentation...",
+          "Scanning your repository, extracting key files, and generating documentation. Please stay on this page to avoid progress loss.",
+          "warning"
+        );
+
         const {
           data: { markdown },
         } = await axiosInstance.post("api/documentation", {
@@ -58,7 +58,7 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
           }),
           project: {
             project_name: repo?.name,
-            project_description: repo?.description,
+            project_description: repo?.description || "",
             branch_name: repo?.default_branch,
           },
           additional_data: additionalData,
@@ -142,6 +142,7 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
             handleMarkdownChange={setMarkdown}
             handleGenerateMarkdown={handleGenerateDoc}
             isSections={sections.length > 0}
+            repo={repo}
           />
         )}
         {tabName === "preview" && (
@@ -163,7 +164,7 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
                 }}
               >
                 <DownloadButton markdown={markdown} />
-                <PushButton markdown={markdown} />
+                <PushButton markdown={markdown} repo={repo} />
               </Box>
             )}
 

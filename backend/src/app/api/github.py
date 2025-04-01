@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from src.app.core.jwt import verify_jwt_token
 from src.app.core.github import GitHub
 from pydantic import BaseModel
@@ -67,4 +67,26 @@ async def get_repo_file(
 
     return await github.get_files(
         user=user, repo_name=repo_name, branch_name=branch_name
+    )
+
+
+@router.post("/repo/{repo_name}/{branch_name}/push-readme")
+async def push_readme(
+    repo_name: str,
+    branch_name: str,
+    payload: dict = Depends(verify_jwt_token),
+    readme_data: dict = None,
+):
+    user = {
+        "id": payload["sub"],
+        "user_name": payload["user_metadata"]["preferred_username"],
+    }
+    if not readme_data or "content" not in readme_data:
+        raise HTTPException(status_code=400, detail="README content is required")
+
+    return await github.push_readme_and_create_pr(
+        user=user,
+        repo_name=repo_name,
+        branch_name=branch_name,
+        readme_content=readme_data["content"],
     )
