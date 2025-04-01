@@ -69,7 +69,7 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
           px: 2,
         }}
       >
-        <Text as="h4">Documentation Configuration</Text>
+        <Text as="h3">Documentation Configuration</Text>
         <Text
           sx={{
             color: "fg.muted",
@@ -77,8 +77,9 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
           }}
         >
           Select up to 10 sections and customize your README with optional
-          features like emojis. Add extra details in 'Additional Information' to
-          tailor it to your project!
+          features like emojis. The system might suggest extra sections that
+          could be useful for your project. Add extra details in 'Additional
+          Information' to tailor it to your project!
         </Text>
       </Box>
 
@@ -163,19 +164,41 @@ const DocumentationConfiguration: React.FC<DocConfigProps> = ({
             borderTopColor: "border.default",
           }}
         >
-          <Stack direction="horizontal" align="center">
-            <div id="size-toggle-label-small">Enable Emojis</div>
-            <ToggleSwitch
-              size="small"
-              aria-labelledby="size-toggle-label-small"
-              onChange={(state) =>
-                setAdditionalData((prev) => ({
-                  ...prev,
-                  emojis_enabled: state,
-                }))
-              }
-            />
-          </Stack>
+          <Text as="h5">Extras Features (Optional)</Text>
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              gap: 4,
+            }}
+          >
+            <Stack direction="horizontal" align="center">
+              <div id="size-toggle-label-small">Only Selected Sections</div>
+              <ToggleSwitch
+                size="small"
+                aria-labelledby="size-toggle-label-small"
+                onChange={(state) =>
+                  setAdditionalData((prev) => ({
+                    ...prev,
+                    only_selected_sections: state,
+                  }))
+                }
+              />
+            </Stack>
+            <Stack direction="horizontal" align="center">
+              <div id="size-toggle-label-small">Emojis</div>
+              <ToggleSwitch
+                size="small"
+                aria-labelledby="size-toggle-label-small"
+                onChange={(state) =>
+                  setAdditionalData((prev) => ({
+                    ...prev,
+                    emojis_enabled: state,
+                  }))
+                }
+              />
+            </Stack>
+          </Box>
         </Box>
         <Box
           sx={{

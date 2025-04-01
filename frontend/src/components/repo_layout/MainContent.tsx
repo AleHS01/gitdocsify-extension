@@ -31,6 +31,7 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
   const [additionalData, setAdditionalData] = useState<AdditionalData>({
     additional_info: "",
     emojis_enabled: false,
+    only_selected_sections: false,
   });
 
   const { showNotification } = useNotification();

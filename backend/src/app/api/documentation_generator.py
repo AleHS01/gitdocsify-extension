@@ -25,6 +25,7 @@ class Project(BaseModel):
 class AdditionalData(BaseModel):
     additional_info: str
     emojis_enabled: bool
+    only_selected_sections: bool
 
 
 class DocumentationData(BaseModel):
@@ -43,7 +44,7 @@ async def generate_documentation(
     }
 
     doc_generator = DocumentationGenerator(user, documentation_data.project)
-
+    print(f"aditional_data = {documentation_data.additional_data}")
     markdown = await doc_generator.run_pipeline(
         documentation_data.sections, documentation_data.additional_data
     )

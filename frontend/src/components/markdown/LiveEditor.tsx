@@ -169,10 +169,10 @@ const LiveEditor: React.FC<LiveEditorProps> = ({
           </Blankslate.Heading>
           <Blankslate.Description>
             <Box sx={{ textAlign: "center" }}>
-              Automatically generate a **README** for your repository based on
-              its files. This tool analyzes your project and creates
-              well-structured documentation, helping others understand and
-              contribute more easily.
+              Automatically generate a README for your repository based on its
+              files. This tool analyzes your project and creates well-structured
+              documentation, helping others understand and contribute more
+              easily.
             </Box>
           </Blankslate.Description>
           <Button
