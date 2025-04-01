@@ -1,8 +1,10 @@
 import React from "react";
-import { Box, Link, Text } from "@primer/react";
+import { Box, Link as Link, Text } from "@primer/react";
 import { MarkGithubIcon } from "@primer/octicons-react";
+import { useNavigate } from "react-router-dom";
 
 const Footer: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -21,10 +23,11 @@ const Footer: React.FC = () => {
       }}
     >
       <Box sx={{ display: "flex", gap: 3 }}>
-        <Link href="/" muted>
+        <Link muted onClick={() => navigate("/")}>
           Landing Page
         </Link>
-        <Link href="/dashboard" muted>
+
+        <Link muted onClick={() => navigate("/dashboard")}>
           Dashboard
         </Link>
       </Box>

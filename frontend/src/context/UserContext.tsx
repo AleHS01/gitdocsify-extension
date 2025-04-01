@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import supabase from "../lib/supabase";
 import { User } from "../types/user";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createUserData } from "../utils/user";
 import axiosInstance from "../utils/axios";
 

@@ -12,7 +12,7 @@ const AppWrapper: React.FC<AppWrapperProps> = ({ children }) => {
     <StrictMode>
       <ThemeProvider colorMode="auto">
         <BaseStyles>
-          <BrowserRouter>
+          <BrowserRouter basename="/">
             <UserProvider>
               <NotificationProvider>{children}</NotificationProvider>
             </UserProvider>

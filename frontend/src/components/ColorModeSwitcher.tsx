@@ -11,13 +11,20 @@ interface Scheme {
 function ColorModeSwitcher() {
   const { setDayScheme, setNightScheme, colorScheme } = useTheme();
 
-  useEffect(() => {
-    const systemPreference = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
+  const getInitialTheme = () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) return savedTheme;
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
-    setDayScheme(systemPreference);
-    setNightScheme(systemPreference);
+  };
+
+  useEffect(() => {
+    const initialTheme = getInitialTheme();
+    setDayScheme(initialTheme);
+    setNightScheme(initialTheme);
+    localStorage.setItem("theme", initialTheme);
   }, [setDayScheme, setNightScheme]);
 
   const schemes: Scheme[] = [
@@ -63,6 +70,7 @@ function ColorModeSwitcher() {
                     onSelect={() => {
                       setDayScheme(scheme.value);
                       setNightScheme(scheme.value);
+                      localStorage.setItem("theme", scheme.value);
                     }}
                   >
                     {scheme.name}

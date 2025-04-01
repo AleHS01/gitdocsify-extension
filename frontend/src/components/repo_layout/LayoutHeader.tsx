@@ -42,7 +42,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({ repo, loading }) => {
     >
       <Stack gap="condensed">
         <Breadcrumbs sx={{ fontSize: "14px", color: "inherit" }}>
-          <Link to="/" style={{ color: "inherit" }}>
+          <Link to="/dashboard" style={{ color: "inherit" }}>
             <Breadcrumbs.Item>
               <ReplyIcon /> Dashboard
             </Breadcrumbs.Item>
