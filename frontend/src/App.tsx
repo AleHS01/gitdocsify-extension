@@ -1,5 +1,4 @@
 import "./assets/notifications.css";
-import ColorModeSwitcher from "./components/ColorModeSwitcher";
 import { useRoutes } from "react-router-dom";
 import { Box } from "@primer/react";
 import Dashboard from "./pages/Dashboard";
@@ -10,6 +9,7 @@ import ToastNotification from "./components/ToastNotification";
 import { useNotification } from "./context/NotificationContext";
 import Footer from "./components/Footer";
 import LandingPage from "./pages/LandingPage";
+import TopMenu from "./components/TopMenu";
 
 function App() {
   const { notifications } = useNotification();
@@ -38,7 +38,7 @@ function App() {
         position: "relative",
       }}
     >
-      <ColorModeSwitcher />
+      <TopMenu />
       <Box
         sx={{
           px: 1,
