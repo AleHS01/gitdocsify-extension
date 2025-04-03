@@ -15,7 +15,7 @@ const ToastNotification: React.FC<ToastNotificationProps> = ({
   title,
   description,
   variant,
-  duration = 3000,
+  duration = 5000,
   onDismiss,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -25,7 +25,7 @@ const ToastNotification: React.FC<ToastNotificationProps> = ({
     if (isVisible) {
       const timer = setTimeout(() => {
         setAnimationClass("toast-slide-out");
-        setTimeout(() => setIsVisible(false), 300);
+        setTimeout(() => setIsVisible(false), duration);
         if (onDismiss) onDismiss();
       }, duration);
 

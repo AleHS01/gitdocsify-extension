@@ -23,11 +23,15 @@ const Footer: React.FC = () => {
       }}
     >
       <Box sx={{ display: "flex", gap: 3 }}>
-        <Link muted onClick={() => navigate("/")}>
+        <Link muted onClick={() => navigate("/")} sx={{ cursor: "pointer" }}>
           Landing Page
         </Link>
 
-        <Link muted onClick={() => navigate("/dashboard")}>
+        <Link
+          muted
+          onClick={() => navigate("/dashboard")}
+          sx={{ cursor: "pointer" }}
+        >
           Dashboard
         </Link>
       </Box>
@@ -41,7 +45,9 @@ const Footer: React.FC = () => {
         >
           <MarkGithubIcon size={16} /> AleHS' GitHub
         </Link>
-        <Text>© {new Date().getFullYear()}</Text>
+        <Text>
+          | GitDocsify | Built for Developers © {new Date().getFullYear()}
+        </Text>
       </Box>
     </Box>
   );

@@ -31,9 +31,8 @@ const LiveEditor: React.FC<LiveEditorProps> = ({
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
         textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        // const lines = markdown.split("\n").map((_, i) => (i + 1).toString());
-        // setLineNumbers(lines);
-        console.log("mardkown= ", markdown);
+        const lines = markdown.split("\n").map((_, i) => (i + 1).toString());
+        setLineNumbers(lines);
       }
     };
 

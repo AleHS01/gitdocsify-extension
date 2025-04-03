@@ -43,7 +43,8 @@ const MainContent: React.FC<MainContentProps> = ({ repo }) => {
         showNotification(
           "Generating Documentation...",
           "Scanning your repository, extracting key files, and generating documentation. Please stay on this page to avoid progress loss.",
-          "warning"
+          "warning",
+          10000
         );
 
         const {
