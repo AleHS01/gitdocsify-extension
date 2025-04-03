@@ -8,6 +8,7 @@ import React from "react";
 import { EyeClosedIcon } from "@primer/octicons-react";
 import { Blankslate, InlineMessage } from "@primer/react/drafts";
 import rehypeRaw from "rehype-raw";
+import "../../assets/preview.css";
 
 type TabName = "config" | "editor" | "preview" | "file";
 
@@ -24,12 +25,13 @@ const LivePreviewer: React.FC<LivePreviewerProps> = ({
     <Box
       flex={1}
       p={2}
-      className="markdown-body"
+      className="markdown-body2"
       sx={{
         overflowY: "auto",
         minHeight: "500px",
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "none important!",
       }}
     >
       {markdown ? (

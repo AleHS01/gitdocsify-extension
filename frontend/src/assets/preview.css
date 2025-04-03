@@ -1,0 +1,16 @@
+/* .markdown-body 
+
+This is the original class coming from prism-themes, but it was overriding the background color and font color
+So when swicthing between light and dark mode, the component remain dark due to the override,
+so I copy all the attritbute into a new class removing the colors
+*/
+.markdown-body2 {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
