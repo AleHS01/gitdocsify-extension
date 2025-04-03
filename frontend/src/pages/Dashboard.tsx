@@ -46,8 +46,8 @@ const Dashboard = () => {
           p: 5,
         }}
       >
-        {repos.map((repo: Repository) => (
-          <RepoCard repo={repo} />
+        {repos.map((repo: Repository, idx: number) => (
+          <RepoCard repo={repo} key={idx} />
         ))}
       </Box>
     </Box>

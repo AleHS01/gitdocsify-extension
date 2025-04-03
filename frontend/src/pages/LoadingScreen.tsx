@@ -1,6 +1,6 @@
 import React from "react";
 import { Heading, Box } from "@primer/react";
-import "../assets/loading.css";
+import "../assets/CSS/loading.css";
 
 const LoadingScreen: React.FC = () => {
   return (

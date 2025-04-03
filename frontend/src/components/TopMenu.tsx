@@ -21,6 +21,7 @@ const TopMenu = () => {
         p: 3,
         alignItems: "center",
         justifyContent: "center",
+        zIndex: 2,
       }}
     >
       <ColorModeSwitcher />

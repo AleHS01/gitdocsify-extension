@@ -8,7 +8,7 @@ import React from "react";
 import { EyeClosedIcon } from "@primer/octicons-react";
 import { Blankslate, InlineMessage } from "@primer/react/drafts";
 import rehypeRaw from "rehype-raw";
-import "../../assets/preview.css";
+import "../../assets/CSS/preview.css";
 
 type TabName = "config" | "editor" | "preview" | "file";
 

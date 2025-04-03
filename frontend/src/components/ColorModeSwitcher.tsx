@@ -25,6 +25,7 @@ function ColorModeSwitcher() {
     setDayScheme(initialTheme);
     setNightScheme(initialTheme);
     localStorage.setItem("theme", initialTheme);
+    document.documentElement.setAttribute("data-theme", initialTheme);
   }, [setDayScheme, setNightScheme]);
 
   const schemes: Scheme[] = [
@@ -71,6 +72,10 @@ function ColorModeSwitcher() {
                       setDayScheme(scheme.value);
                       setNightScheme(scheme.value);
                       localStorage.setItem("theme", scheme.value);
+                      document.documentElement.setAttribute(
+                        "data-theme",
+                        scheme.value
+                      );
                     }}
                   >
                     {scheme.name}

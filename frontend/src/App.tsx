@@ -1,4 +1,4 @@
-import "./assets/notifications.css";
+import "./assets/CSS/notifications.css";
 import { useRoutes } from "react-router-dom";
 import { Box } from "@primer/react";
 import Dashboard from "./pages/Dashboard";

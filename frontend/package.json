@@ -19,6 +19,7 @@
     "@supabase/supabase-js": "^2.48.1",
     "@types/chrome": "^0.0.306",
     "axios": "^1.7.9",
+    "framer-motion": "^12.6.3",
     "github-markdown-css": "^5.8.1",
     "prism-themes": "^1.9.0",
     "react": "^18.3.1",

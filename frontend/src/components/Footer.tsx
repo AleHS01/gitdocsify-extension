@@ -20,6 +20,7 @@ const Footer: React.FC = () => {
         position: "fixed",
         bottom: 0,
         left: 0,
+        zIndex: 2,
       }}
     >
       <Box sx={{ display: "flex", gap: 3 }}>
