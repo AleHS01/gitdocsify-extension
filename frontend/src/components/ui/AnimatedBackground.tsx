@@ -2,7 +2,7 @@ import "../../assets/CSS/animated_background.css";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
-const AnimatedBackground = () => {
+const AnimatedBackground: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,

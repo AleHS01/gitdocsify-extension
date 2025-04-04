@@ -15,7 +15,7 @@ const TopMenu = () => {
       sx={{
         display: "flex",
         gap: 2,
-        position: "absolute",
+        position: isLandingPage ? "fixed" : "absolute",
         top: 0,
         right: 0,
         p: 3,

@@ -1,16 +1,23 @@
 import { Box } from "@primer/react";
 import React from "react";
 import AnimatedBackground from "../components/ui/AnimatedBackground";
+import HeroSection from "../components/landing/HeroSection";
+import HowItWorksSection from "../components/landing/HowItWorksSection";
+import ClosingSection from "../components/landing/ClosingSection";
 
 const LandingPage: React.FC = () => {
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
-        color: "red",
+        width: "100wh",
+        minHeight: "100vh",
+        maxWidth: "1500px",
+        mx: "auto",
       }}
     >
+      <HeroSection />
+      <HowItWorksSection />
+      <ClosingSection />
       <AnimatedBackground />
     </Box>
   );

@@ -1,9 +1,9 @@
 .animated-background {
   position: fixed;
   inset: 0;
-  z-index: -10;
   overflow: hidden;
-  z-index: 1;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* Gradient Orb Base */
