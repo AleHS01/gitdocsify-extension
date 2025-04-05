@@ -6,7 +6,6 @@
   pointer-events: none;
 }
 
-/* Gradient Orb Base */
 .gradient-orb {
   position: absolute;
   width: 150px;
@@ -14,6 +13,7 @@
   border-radius: 50%;
   opacity: 0.8;
   filter: blur(80px);
+  z-index: 100;
 }
 
 .gradient-blue {
@@ -24,7 +24,6 @@
   background-color: #8855ff;
 }
 
-/* Grid Pattern */
 .grid-pattern {
   position: absolute;
   inset: 0;
@@ -32,6 +31,7 @@
     linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
 
   background-size: 24px 24px;
+  z-index: 0;
 }
 
 [data-theme="dark"] .grid-pattern {

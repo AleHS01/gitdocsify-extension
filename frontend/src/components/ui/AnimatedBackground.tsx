@@ -22,7 +22,6 @@ const AnimatedBackground: React.FC = () => {
 
   return (
     <div className="animated-background">
-      {/* Gradient Orbs */}
       <motion.div
         className="gradient-orb gradient-blue"
         animate={{
@@ -50,7 +49,6 @@ const AnimatedBackground: React.FC = () => {
         }}
       />
 
-      {/* Grid Pattern */}
       <div className="grid-pattern" />
 
       {/* Noise Texture */}

@@ -1,42 +1,33 @@
-import { BookIcon, CodescanIcon, Icon, RepoIcon } from "@primer/octicons-react";
-import { Box, Button, Heading, Text } from "@primer/react";
-import React from "react";
-
-type Step = {
-  icon: Icon;
-  description: string;
-};
-
-const steps: Step[] = [
-  {
-    icon: RepoIcon,
-    description: "Select a GitHub Repository",
-  },
-  {
-    icon: CodescanIcon,
-    description: "AI Scans & Understand Your Code",
-  },
-  {
-    icon: BookIcon,
-    description: "Generates a Professional README",
-  },
-];
-
-const cardStyles = {
-  width: 350,
-  height: 250,
-  borderStyle: "solid",
-  borderColor: "success.emphasis",
-  backgroundColor: "success.subtle",
-  borderRadius: 4,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
+import { motion, useAnimation, useInView } from "framer-motion";
+import { Box, Button, Heading } from "@primer/react";
+import React, { useEffect, useRef, useState } from "react";
+import SelectRepositoryStep from "./SelectRepositoryStep";
+import ScanCodeStep from "./ScanCodeStep";
+import GenerationStep from "./GenerationStep";
 
 const HowItWorksSection: React.FC = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, {
+    margin: "-40% 0px -40% 0px",
+    once: true,
+  });
+  const controls = useAnimation();
+
+  const [animationStates, setAnimationStates] = useState([false, false, false]);
+
+  useEffect(() => {
+    if (isInView) controls.start("visible");
+  }, [isInView, controls]);
+
+  const stepComponents = [
+    <SelectRepositoryStep start={animationStates[0]} />,
+    <ScanCodeStep start={animationStates[1]} />,
+    <GenerationStep start={animationStates[2]} />,
+  ];
+
   return (
     <Box
+      ref={sectionRef}
       sx={{
         width: "100%",
         height: "90vh",
@@ -56,34 +47,56 @@ const HowItWorksSection: React.FC = () => {
           alignItems: "center",
           px: 10,
           mx: "auto",
+          textAlign: "center",
         }}
       >
-        {steps.map(({ icon: IconComponent, description }, i) => (
-          <Box
-            key={i}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 4,
+        {stepComponents.map((Component, index) => (
+          <motion.div
+            key={index}
+            variants={{
+              hidden: { opacity: 0, y: 50 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { delay: index * 2 },
+              },
             }}
+            initial="hidden"
+            animate={controls}
+            onAnimationComplete={() =>
+              setAnimationStates((prev) => {
+                const updated = [...prev];
+                updated[index] = true;
+                return updated;
+              })
+            }
           >
-            <Box sx={cardStyles}>
-              <Box sx={{ color: "success.emphasis" }}>
-                {/* <IconComponent size={150} /> */}
-                <Text fontSize={180}>{i + 1}</Text>
-              </Box>
-            </Box>
-            <Text textAlign="center">{description}</Text>
-          </Box>
+            {Component}
+          </motion.div>
         ))}
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button variant="primary" sx={{ borderRadius: 2, px: 10, fontSize: 2 }}>
-          Generate README
-        </Button>
-      </Box>
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 50 },
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: { delay: 8 },
+          },
+        }}
+        initial="hidden"
+        animate={controls}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            variant="primary"
+            sx={{ borderRadius: 2, px: 10, fontSize: 2 }}
+          >
+            Generate README
+          </Button>
+        </Box>
+      </motion.div>
     </Box>
   );
 };

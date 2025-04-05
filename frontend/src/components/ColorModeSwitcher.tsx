@@ -28,6 +28,10 @@ function ColorModeSwitcher() {
     document.documentElement.setAttribute("data-theme", initialTheme);
   }, [setDayScheme, setNightScheme]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", getInitialTheme());
+  }, []);
+
   const schemes: Scheme[] = [
     {
       name: "Light",

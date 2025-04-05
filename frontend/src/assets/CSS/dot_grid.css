@@ -1,0 +1,27 @@
+.dot-grid-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+}
+
+.dot-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 20%;
+}
+
+.dot-wrapper:hover {
+  background-color: #475569;
+}
+
+.dot-point {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #334155, #cbd5e1);
+  opacity: 0.5;
+  transition: background 0.3s ease;
+}

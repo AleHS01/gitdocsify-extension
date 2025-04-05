@@ -41,7 +41,6 @@ function App() {
       <TopMenu />
       <Box
         sx={{
-          px: 1,
           height: "100%",
         }}
       >

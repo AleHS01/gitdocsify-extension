@@ -1,0 +1,21 @@
+.scanning-bar {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: var(--borderColor-success-emphasis);
+  opacity: 0.5;
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: 100%;
+  }
+  50% {
+    top: 0%;
+  }
+  100% {
+    top: 100%;
+  }
+}

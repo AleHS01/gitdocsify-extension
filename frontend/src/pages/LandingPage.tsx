@@ -14,6 +14,7 @@ const LandingPage: React.FC = () => {
         maxWidth: "1500px",
         mx: "auto",
       }}
+      id="landing-page"
     >
       <HeroSection />
       <HowItWorksSection />
