@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, CircleBadge, ProgressBar, Stack, Text } from "@primer/react";
-import { languageColors } from "../utils/languageColors";
+import { getLanguageColor } from "../utils/languageColors";
 
 type LanguageProgressBarProp = {
   languages: { [key: string]: number };
@@ -49,7 +49,8 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
                 aria-valuenow={percentage}
                 aria-valuetext={language}
                 sx={{
-                  bg: language === "Other" ? "white" : languageColors[language],
+                  bg:
+                    language === "Other" ? "white" : getLanguageColor(language),
                   marginRight:
                     index < Object.keys(processedLanguages).length - 1
                       ? "3px"
@@ -83,7 +84,9 @@ const LanguageProgressBar: React.FC<LanguageProgressBarProp> = ({
                   size={10}
                   sx={{
                     backgroundColor:
-                      language === "Other" ? "white" : languageColors[language],
+                      language === "Other"
+                        ? "white"
+                        : getLanguageColor(language),
                   }}
                 />
                 <Text sx={{ fontSize: 1, ml: 1 }}>{language}</Text>

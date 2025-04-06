@@ -38,7 +38,9 @@ const DotGrid: React.FC = () => {
     };
   }, []);
 
-  const handleDotClick = (e) => {
+  const handleDotClick = (e: React.MouseEvent<HTMLElement>) => {
+    const index = Number((e.target as HTMLElement).dataset.index);
+    console.log(index);
     animate(".dot-point", {
       scale: [
         { to: 1.35, ease: "outSine", duration: 250 },
@@ -54,7 +56,7 @@ const DotGrid: React.FC = () => {
       ],
       delay: stagger(100, {
         grid: [gridWidth, gridHeight],
-        from: Number(e.target.dataset.index),
+        from: index,
       }),
     });
   };

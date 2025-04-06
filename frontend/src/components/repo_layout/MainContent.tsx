@@ -18,7 +18,7 @@ import { Repository } from "../../types/repository";
 import axiosInstance from "../../utils/axios";
 import { AdditionalData } from "../../types/additional_data";
 
-type TabName = "config" | "editor" | "preview" | "file";
+export type TabName = "config" | "editor" | "preview" | "file";
 
 type MainContentProps = {
   repo: Repository | undefined;

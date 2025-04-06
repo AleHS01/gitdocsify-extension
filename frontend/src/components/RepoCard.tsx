@@ -7,7 +7,7 @@ import {
 import { Link } from "react-router-dom";
 import { Box, Text, CircleBadge, Heading } from "@primer/react";
 import { Repository } from "../types/repository";
-import { languageColors } from "../utils/languageColors";
+import { getLanguageColor as getLanguageColorUtils } from "../utils/languageColors";
 import { useState } from "react";
 
 type RepoCardProps = {
@@ -19,7 +19,7 @@ const RepoCard: React.FC<RepoCardProps> = ({ repo }) => {
 
   const getLanguageColor = (language: string) => {
     if (!language) return "transparent";
-    return languageColors[language] || "transparent";
+    return getLanguageColorUtils(language) || "transparent";
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {

@@ -14,12 +14,13 @@ import SectionDialogBox from "./SectionDialogBox";
 import { Section } from "../types/section";
 import { CommandPaletteIcon, IssueReopenedIcon } from "@primer/octicons-react";
 import { AdditionalData } from "../types/additional_data";
+import { TabName } from "./repo_layout/MainContent";
 
 type DocConfigProps = {
   sections: Section[];
-  setSections: (prev: Section[]) => void;
-  setTabName: (prev: string) => void;
-  setAdditionalData: (prev: AdditionalData) => void;
+  setSections: React.Dispatch<React.SetStateAction<Section[]>>;
+  setTabName: React.Dispatch<React.SetStateAction<TabName>>;
+  setAdditionalData: React.Dispatch<React.SetStateAction<AdditionalData>>;
   additionalData: AdditionalData;
 };
 

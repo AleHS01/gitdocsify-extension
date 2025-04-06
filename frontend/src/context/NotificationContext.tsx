@@ -3,7 +3,7 @@ import { ToastNotificationProps } from "../components/ToastNotification";
 
 type ToastContextType = {
   showNotification: (
-    title: React.ReactNode,
+    title: string,
     description: React.ReactNode,
     variant: "critical" | "info" | "success" | "upsell" | "warning",
     duration?: number

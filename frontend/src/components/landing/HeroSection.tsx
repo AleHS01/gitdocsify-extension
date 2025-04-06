@@ -31,7 +31,6 @@ const HeroSection: React.FC = () => {
           overflow: "hidden",
           display: "-webkit-box",
           WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
         }}
       >
         <TextAnimation

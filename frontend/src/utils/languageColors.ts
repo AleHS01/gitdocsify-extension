@@ -1,4 +1,8 @@
-export const languageColors = {
+export const getLanguageColor = (language: string): string => {
+  return languageColors[language as keyof typeof languageColors] || "white";
+};
+
+const languageColors = {
   "1C Enterprise": "#814CCC",
   ABAP: "#E8274B",
   "AGS Script": "#B9D9FF",

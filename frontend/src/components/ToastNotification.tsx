@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 export type ToastNotificationProps = {
   id?: number;
-  title: string;
+  title: React.ReactNode;
   description: React.ReactNode;
   variant: "critical" | "info" | "success" | "upsell" | "warning";
   duration?: number;
@@ -41,7 +41,7 @@ const ToastNotification: React.FC<ToastNotificationProps> = ({
       }}
     >
       <Banner
-        title={title}
+        title={String(title)}
         description={description}
         variant={variant}
         onDismiss={() => {
